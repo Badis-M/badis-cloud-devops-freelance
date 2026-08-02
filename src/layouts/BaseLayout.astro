@@ -1,0 +1,28 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "Badis Merakchi — Site en préparation",
+  description = "Fondation du site freelance Cloud et DevOps de Badis Merakchi.",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+  </head>
+  <body class="min-h-screen bg-canvas text-ink antialiased">
+    <a class="skip-link" href="#main-content">Aller au contenu principal</a>
+    <slot />
+  </body>
+</html>
