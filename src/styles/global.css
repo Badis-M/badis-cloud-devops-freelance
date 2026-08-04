@@ -1,16 +1,53 @@
 @import "tailwindcss";
 
+@theme static {
+  --font-sans: Inter, ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "SFMono-Regular", Consolas, monospace;
+  --color-canvas: #06080d;
+  --color-surface: #0c111a;
+  --color-surface-raised: #111925;
+  --color-ink: #f5f7fa;
+  --color-muted: #a4adbd;
+  --color-subtle: #717b8e;
+  --color-line: rgb(255 255 255 / 10%);
+  --color-line-strong: rgb(103 232 249 / 28%);
+  --color-accent: #67e8f9;
+  --color-accent-strong: #22d3ee;
+  --color-accent-ink: #061014;
+  --text-display: clamp(3rem, 8vw, 6.5rem);
+  --text-display--line-height: 0.94;
+  --text-display--letter-spacing: -0.055em;
+  --text-heading: clamp(2rem, 5vw, 4rem);
+  --text-heading--line-height: 1;
+  --text-heading--letter-spacing: -0.04em;
+  --text-lead: clamp(1.0625rem, 2vw, 1.25rem);
+  --text-lead--line-height: 1.7;
+  --radius-card: 1.5rem;
+}
+
 @layer base {
+  :root {
+    color-scheme: dark;
+  }
+
   html {
     min-width: 320px;
+    scroll-behavior: smooth;
+    background: var(--color-canvas);
   }
 
   body {
     min-height: 100vh;
     margin: 0;
-    background: #07090f;
-    color: #f7f8fb;
-    font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+    overflow-x: hidden;
+    background: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+  }
+
+  :where(a, button, input, select, textarea):focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 4px;
   }
 }
 
@@ -20,5 +57,62 @@
 }
 
 @utility section-space {
-  padding-block: 5rem;
+  padding-block: clamp(5rem, 11vw, 8.5rem);
+}
+
+@utility subtle-glow {
+  box-shadow: 0 28px 100px rgb(34 211 238 / 8%);
+}
+
+@layer components {
+  .skip-link {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 50;
+    translate: 0 -200%;
+    background: var(--color-accent);
+    color: var(--color-accent-ink);
+    padding: 0.75rem 1rem;
+  }
+
+  .skip-link:focus {
+    translate: 0;
+  }
+
+  .eyebrow {
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .button {
+    display: inline-flex;
+    min-height: 3rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .button-primary {
+    background: var(--color-accent);
+    color: var(--color-accent-ink);
+  }
+
+  .button-secondary {
+    border: 1px solid var(--color-line);
+    color: var(--color-ink);
+  }
+
+  .surface-card {
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-card);
+    background: var(--color-surface);
+  }
 }
