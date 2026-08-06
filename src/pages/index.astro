@@ -1,10 +1,26 @@
 ---
-import BaseLayout from "../../src/layouts/BaseLayout.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import About from "../components/About.astro";
+import Contact from "../components/Contact.astro";
+import Footer from "../components/Footer.astro";
+import Hero from "../components/Hero.astro";
+import Method from "../components/Method.astro";
+import Navigation from "../components/Navigation.astro";
+import Proof from "../components/Proof.astro";
+import Services from "../components/Services.astro";
+import WhyWorkWithMe from "../components/WhyWorkWithMe.astro";
 ---
 
 <BaseLayout>
-  <main id="main-content" class="content-container section-space">
-    <h1 class="text-4xl font-semibold">Badis Cloud & DevOps Freelance</h1>
-    <p class="mt-4">Project foundation ready.</p>
+  <Navigation />
+  <main id="main-content">
+    <Hero />
+    <Services />
+    <WhyWorkWithMe />
+    <Method />
+    <About />
+    <Proof />
+    <Contact />
   </main>
+  <Footer />
 </BaseLayout>
