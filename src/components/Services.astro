@@ -1,4 +1,102 @@
-<section id="services" class="content-container section-space" aria-labelledby="services-title">
-  <p class="eyebrow">// SERVICES</p>
-  <h2 id="services-title" class="mt-6 text-heading font-semibold">Services Cloud, DevOps et Platform Engineering</h2>
+---
+const services = [
+  {
+    category: "// CLOUD",
+    title: "Cloud & Infrastructure Automation",
+    description:
+      "Structurez et automatisez vos environnements cloud avec une approche reproductible, maintenable et adaptée à vos contraintes opérationnelles.",
+    bullets: [
+      "Infrastructure as Code avec Terraform",
+      "Environnements AWS, Azure ou OCI",
+      "Documentation et standards d’exploitation",
+    ],
+    cta: "Parler infrastructure →",
+    featured: false,
+  },
+  {
+    category: "// DELIVERY",
+    title: "CI/CD & Industrialisation",
+    description:
+      "Améliorez vos pipelines de build, test et déploiement pour réduire les interventions manuelles, fiabiliser les releases et accélérer la livraison.",
+    bullets: [
+      "GitHub Actions, GitLab CI et workflows de déploiement",
+      "Docker, automatisation et qualité des releases",
+      "Réduction des frictions pour les équipes techniques",
+    ],
+    cta: "Optimiser vos pipelines →",
+    featured: true,
+  },
+  {
+    category: "// PLATFORM",
+    title: "Kubernetes & Platform Engineering",
+    description:
+      "Posez des bases plus propres pour vos applications conteneurisées : déploiements standardisés, observabilité, GitOps et patterns réutilisables.",
+    bullets: [
+      "Kubernetes, Helm et GitOps",
+      "Standards de déploiement applicatif",
+      "Observabilité et fiabilité opérationnelle",
+    ],
+    cta: "Structurer votre plateforme →",
+    featured: false,
+  },
+];
+---
+
+<section id="services" class="section-band scroll-mt-24" aria-labelledby="services-title">
+  <div class="content-container section-space">
+    <div class="mx-auto max-w-4xl text-center">
+      <p class="eyebrow">// SERVICES</p>
+      <h2 id="services-title" class="mt-6 text-heading font-semibold text-balance text-ink">
+        Des services concrets<br class="hidden sm:block" /> pour renforcer votre infrastructure
+      </h2>
+      <p class="mx-auto mt-7 max-w-3xl text-lead text-muted">
+        J’interviens sur des sujets Cloud, DevOps et Platform Engineering avec une approche
+        pragmatique : comprendre le contexte, identifier les points de friction, livrer des
+        améliorations utiles et documentées.
+      </p>
+    </div>
+
+    <div class="mt-16 grid gap-6 md:grid-cols-2 lg:mt-20 lg:grid-cols-3">
+      {
+        services.map((service, index) => (
+          <article
+            class:list={[
+              "surface-card group flex h-full min-h-[31rem] flex-col p-7 sm:p-8 lg:p-9",
+              service.featured && "featured-card subtle-glow",
+            ]}
+          >
+            <div class="flex items-center justify-between gap-4">
+              <p class="eyebrow">{service.category}</p>
+              <span class="font-mono text-xs text-subtle">{String(index + 1).padStart(2, "0")}</span>
+            </div>
+            <h3 class="mt-7 text-2xl font-semibold tracking-[-0.03em] text-balance text-ink lg:text-[1.7rem]">
+              {service.title}
+            </h3>
+            <p class="mt-5 leading-7 text-muted">{service.description}</p>
+
+            <ul class="mt-7 space-y-4 border-t border-line pt-6" role="list">
+              {service.bullets.map((bullet) => (
+                <li class="flex gap-3 text-sm leading-6 text-muted">
+                  <span
+                    class="mt-1 flex size-4 shrink-0 items-center justify-center rounded-full border border-line-strong bg-accent/10 text-[0.625rem] font-bold text-accent"
+                    aria-hidden="true"
+                  >
+                    ✓
+                  </span>
+                  <span>{bullet}</span>
+                </li>
+              ))}
+            </ul>
+
+            <a
+              class="mt-auto inline-flex w-fit items-center border-b border-accent/30 pt-8 pb-1 font-semibold text-accent no-underline transition-colors hover:border-ink hover:text-ink"
+              href="#contact"
+            >
+              {service.cta}
+            </a>
+          </article>
+        ))
+      }
+    </div>
+  </div>
 </section>
