@@ -1,4 +1,57 @@
-<section id="method" class="content-container section-space" aria-labelledby="method-title">
-  <p class="eyebrow">// MÉTHODE</p>
-  <h2 id="method-title" class="mt-6 text-heading font-semibold">Une intervention structurée</h2>
+---
+const steps = [
+  {
+    title: "Découverte",
+    description:
+      "Nous clarifions votre contexte, vos objectifs, vos contraintes techniques, vos délais et les problèmes à résoudre en priorité.",
+  },
+  {
+    title: "Évaluation",
+    description:
+      "J’analyse l’existant : infrastructure, pipelines, déploiements, documentation, sécurité, observabilité et points de friction opérationnels.",
+  },
+  {
+    title: "Plan d’action",
+    description:
+      "Vous obtenez une roadmap claire, priorisée et directement exploitable, avec les actions à forte valeur ajoutée en premier.",
+  },
+  {
+    title: "Implémentation",
+    description:
+      "Je mets en place les améliorations validées, avec documentation, transfert de connaissance et attention portée à la maintenabilité.",
+  },
+];
+---
+
+<section id="method" class="section-band scroll-mt-24" aria-labelledby="method-title">
+  <div class="content-container section-space">
+    <div class="mx-auto max-w-4xl text-center">
+      <p class="eyebrow">// MÉTHODE</p>
+      <h2 id="method-title" class="mt-6 text-heading font-semibold text-balance text-ink">
+        Une intervention structurée,<br class="hidden sm:block" /> du cadrage à la livraison
+      </h2>
+      <p class="mx-auto mt-7 max-w-3xl text-lead text-muted">
+        Chaque mission commence par une compréhension claire du contexte. L’objectif n’est pas
+        d’ajouter des outils, mais de résoudre les bons problèmes dans le bon ordre.
+      </p>
+    </div>
+
+    <ol class="mt-16 grid gap-px overflow-hidden rounded-card border border-line bg-line sm:grid-cols-2 lg:mt-20 lg:grid-cols-4">
+      {
+        steps.map((step, index) => (
+          <li class="group relative min-h-72 overflow-hidden bg-surface p-7 transition-colors hover:bg-surface-raised sm:p-8">
+            <div
+              class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/70 to-transparent opacity-30 transition-opacity group-hover:opacity-100"
+              aria-hidden="true"
+            />
+            <span class="font-mono text-4xl font-semibold tracking-[-0.08em] text-accent/30">
+              {String(index + 1).padStart(2, "0")}
+            </span>
+            <h3 class="mt-10 text-xl font-semibold tracking-tight text-ink">{step.title}</h3>
+            <p class="mt-4 text-sm leading-6 text-muted">{step.description}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
 </section>
