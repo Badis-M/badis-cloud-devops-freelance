@@ -1,3 +1,65 @@
-<footer id="site-footer" class="border-t border-line py-10">
-  <div class="content-container">Badis Merakchi · Consultant Cloud & DevOps</div>
+<footer id="site-footer" class="relative overflow-hidden border-t border-line bg-canvas/90">
+  <div
+    class="pointer-events-none absolute top-0 right-0 h-56 w-96 bg-[radial-gradient(circle_at_top_right,rgba(37,99,235,0.08),transparent_70%)]"
+    aria-hidden="true"
+  ></div>
+  <div class="content-container relative py-14 sm:py-16">
+    <div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.35fr_0.8fr_0.8fr] lg:gap-14">
+      <div class="max-w-sm">
+        <a
+          class="inline-flex items-center gap-3 text-lg font-semibold tracking-tight text-ink no-underline transition-colors hover:text-accent"
+          href="#hero"
+        >
+          <span class="flex h-9 w-9 items-center justify-center rounded-xl border border-line-strong bg-accent/10 font-mono text-xs text-accent">
+            BM
+          </span>
+          Badis Merakchi
+        </a>
+        <p class="mt-4 text-sm leading-6 text-muted">
+          Consultant Cloud & DevOps freelance · Genève
+        </p>
+      </div>
+
+      <nav aria-label="Navigation de pied de page">
+        <p class="font-mono text-[0.65rem] font-semibold tracking-[0.2em] text-subtle uppercase">
+          Navigation
+        </p>
+        <ul class="mt-5 grid gap-3 text-sm text-muted">
+          <li><a class="transition-colors hover:text-ink" href="#services">Services</a></li>
+          <li><a class="transition-colors hover:text-ink" href="#about">À propos</a></li>
+          <li><a class="transition-colors hover:text-ink" href="#method">Méthode</a></li>
+          <li><a class="transition-colors hover:text-ink" href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+
+      <div aria-labelledby="footer-links-title">
+        <p
+          id="footer-links-title"
+          class="font-mono text-[0.65rem] font-semibold tracking-[0.2em] text-subtle uppercase"
+        >
+          Liens
+        </p>
+        <ul class="mt-5 grid gap-3 text-sm">
+          <li>
+            <a
+              class="text-muted transition-colors hover:text-ink"
+              href="https://portfolio.badismerakchi.com/"
+            >
+              Portfolio
+            </a>
+          </li>
+          <!-- TODO: Add LinkedIn, GitHub, and email links once verified destinations are provided. -->
+          <li><span class="text-subtle">LinkedIn</span></li>
+          <li><span class="text-subtle">GitHub</span></li>
+          <li><span class="text-subtle">Email</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt-12 border-t border-line pt-7">
+      <p class="text-xs leading-5 text-subtle">
+        © 2026 Badis Merakchi — Tous droits réservés.
+      </p>
+    </div>
+  </div>
 </footer>
