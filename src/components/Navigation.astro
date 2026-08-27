@@ -1,9 +1,27 @@
-<header id="site-navigation" class="border-b border-line py-4">
-  <nav class="content-container" aria-label="Navigation principale">
-    <a href="#hero">Badis Merakchi</a>
-    <a href="#services">Services</a>
-    <a href="#about">À propos</a>
-    <a href="#method">Méthode</a>
-    <a href="#contact">Contact</a>
-  </nav>
+<header
+  id="site-navigation"
+  class="sticky top-0 z-40 border-b border-line bg-canvas/80 backdrop-blur-2xl"
+>
+  <div class="content-container flex items-center justify-between gap-5 py-3.5">
+    <a class="inline-flex items-center gap-3 text-sm font-semibold tracking-tight text-ink no-underline" href="#hero">
+      <span class="flex size-9 items-center justify-center rounded-xl border border-line-strong bg-accent/10 font-mono text-[0.65rem] text-accent">
+        BM
+      </span>
+      <span>
+        Badis Merakchi
+        <span class="hidden text-subtle sm:inline">/ Cloud & DevOps</span>
+      </span>
+    </a>
+
+    <nav aria-label="Navigation principale">
+      <ul class="flex items-center gap-6 text-sm">
+        <li class="hidden md:block"><a class="nav-link" href="#services">Services</a></li>
+        <li class="hidden md:block"><a class="nav-link" href="#about">À propos</a></li>
+        <li class="hidden md:block"><a class="nav-link" href="#method">Méthode</a></li>
+        <li>
+          <a class="button button-secondary min-h-10 px-4 py-2" href="#contact">Contact</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
 </header>
