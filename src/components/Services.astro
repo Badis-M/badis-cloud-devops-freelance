@@ -11,7 +11,6 @@ const services = [
       "Documentation et standards d’exploitation",
     ],
     cta: "Parler infrastructure →",
-    featured: false,
   },
   {
     category: "// DELIVERY",
@@ -24,7 +23,6 @@ const services = [
       "Réduction des frictions pour les équipes techniques",
     ],
     cta: "Optimiser vos pipelines →",
-    featured: true,
   },
   {
     category: "// PLATFORM",
@@ -37,7 +35,6 @@ const services = [
       "Observabilité et fiabilité opérationnelle",
     ],
     cta: "Structurer votre plateforme →",
-    featured: false,
   },
 ];
 ---
@@ -59,12 +56,7 @@ const services = [
     <div class="mt-16 grid gap-6 md:grid-cols-2 lg:mt-20 lg:grid-cols-3">
       {
         services.map((service, index) => (
-          <article
-            class:list={[
-              "surface-card group flex h-full min-h-[31rem] flex-col p-7 sm:p-8 lg:p-9",
-              service.featured && "featured-card subtle-glow",
-            ]}
-          >
+          <article class="surface-card group flex h-full min-h-[31rem] flex-col p-7 hover:-translate-y-0.5 hover:shadow-[0_28px_80px_rgb(0_0_0/0.36)] sm:p-8 lg:p-9">
             <div class="flex items-center justify-between gap-4">
               <p class="eyebrow">{service.category}</p>
               <span class="font-mono text-xs text-subtle">{String(index + 1).padStart(2, "0")}</span>

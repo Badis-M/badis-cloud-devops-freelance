@@ -1,27 +1,38 @@
 <header
   id="site-navigation"
-  class="sticky top-0 z-40 border-b border-line bg-canvas/80 backdrop-blur-2xl"
+  class="sticky top-0 z-40 border-b border-line bg-canvas/75 backdrop-blur-xl"
 >
-  <div class="content-container flex items-center justify-between gap-5 py-3.5">
-    <a class="inline-flex items-center gap-3 text-sm font-semibold tracking-tight text-ink no-underline" href="#hero">
-      <span class="flex size-9 items-center justify-center rounded-xl border border-line-strong bg-accent/10 font-mono text-[0.65rem] text-accent">
+  <div
+    class="content-container grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4 py-3 md:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)]"
+  >
+    <a
+      class="inline-flex w-fit items-center gap-2.5 text-sm font-semibold tracking-tight text-ink no-underline"
+      href="#hero"
+    >
+      <span
+        class="flex size-8 items-center justify-center rounded-lg bg-white/[0.035] font-mono text-[0.625rem] text-accent ring-1 ring-white/[0.08]"
+      >
         BM
       </span>
       <span>
         Badis Merakchi
-        <span class="hidden text-subtle sm:inline">/ Cloud & DevOps</span>
+        <span class="hidden font-normal text-subtle lg:inline"> · Cloud & DevOps</span>
       </span>
     </a>
 
-    <nav aria-label="Navigation principale">
-      <ul class="flex items-center gap-6 text-sm">
-        <li class="hidden md:block"><a class="nav-link" href="#services">Services</a></li>
-        <li class="hidden md:block"><a class="nav-link" href="#about">À propos</a></li>
-        <li class="hidden md:block"><a class="nav-link" href="#method">Méthode</a></li>
-        <li>
-          <a class="button button-secondary min-h-10 px-4 py-2" href="#contact">Contact</a>
-        </li>
+    <nav class="hidden md:block" aria-label="Navigation principale">
+      <ul class="flex items-center gap-7 text-sm">
+        <li><a class="nav-link" href="#services">Services</a></li>
+        <li><a class="nav-link" href="#about">À propos</a></li>
+        <li><a class="nav-link" href="#method">Méthode</a></li>
       </ul>
     </nav>
+
+    <a
+      class="button button-secondary min-h-10 justify-self-end rounded-xl px-4 py-2"
+      href="#contact"
+    >
+      Contact
+    </a>
   </div>
 </header>

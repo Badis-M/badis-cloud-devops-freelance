@@ -208,10 +208,8 @@
 
   .section-band {
     position: relative;
-    border-block: 1px solid var(--color-line);
-    background:
-      radial-gradient(circle at 82% 14%, rgb(37 99 235 / 7%), transparent 28rem),
-      rgb(8 12 20 / 62%);
+    border-block: 0;
+    background: transparent;
   }
 
   .surface-card {
@@ -265,4 +263,8 @@
       transform: translateY(-1rem);
     }
   }
+}
+
+#hero {
+  border-bottom-color: transparent;
 }

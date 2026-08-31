@@ -208,9 +208,24 @@ Client problems addressed:
 
 ## Recommended Website Structure
 
-The first version should be a one-page website.
+The first version is a focused one-page website with this final order:
 
-### 1. Hero Section
+1. Navigation
+2. Hero
+3. Services
+4. Qui suis-je
+5. Méthode
+6. Contact
+7. Footer
+
+### 1. Navigation
+
+Purpose:
+
+- Keep the main anchors and contact action immediately available
+- Stay minimal on desktop and mobile
+
+### 2. Hero Section
 
 Purpose:
 
@@ -232,7 +247,7 @@ Example intent:
 > Consultant Cloud & DevOps freelance basé près de Genève.  
 > J’aide les entreprises à automatiser, fiabiliser et industrialiser leurs infrastructures cloud et leurs workflows de livraison.
 
-### 2. Services Section
+### 3. Services Section
 
 Purpose:
 
@@ -241,26 +256,30 @@ Purpose:
 
 Required elements:
 
-- 3 or 4 service cards
+- 3 service cards with equal visual weight
 - Short description per service
 - Concrete deliverables or outcomes
 - No long technical paragraphs
 
-### 3. Why Work With Me Section
+### 4. Qui suis-je Section
 
 Purpose:
 
-- Explain why Badis is credible
+- Humanize the page and establish credibility without turning it into a CV
 
 Required elements:
 
+- Badis is based near Geneva
+- Cloud and DevOps consultant
 - Oracle Geneva experience
 - Swiss enterprise context
 - Cloud / DevOps background
 - Practical delivery mindset
 - Clear communication
 
-### 4. Method Section
+This is the only dedicated identity and credibility section in the rendered page.
+
+### 5. Method Section
 
 Purpose:
 
@@ -273,37 +292,9 @@ Recommended steps:
 3. Implementation roadmap
 4. Delivery, documentation and handover
 
-### 5. About Section
+Display the four steps horizontally from `01` to `04` on desktop with a subtle dashed connector. Stack them vertically on mobile.
 
-Purpose:
-
-- Humanize the page without turning it into a CV
-
-Should include:
-
-- Badis is based near Geneva
-- Cloud and DevOps consultant
-- Former Oracle Geneva experience
-- Strong interest in infrastructure, automation and platform reliability
-- Focus on useful delivery, not buzzwords
-
-### 6. Proof / Experience Section
-
-Purpose:
-
-- Build confidence
-
-Possible content:
-
-- Technologies
-- Past environments
-- Selected project types
-- Existing GitHub / portfolio links
-- Certifications
-
-Avoid confidential client details.
-
-### 7. Contact Section
+### 6. Contact Section
 
 Purpose:
 
@@ -322,7 +313,7 @@ Recommended wording:
 
 > Décrivez brièvement votre besoin, votre contexte technique et votre horizon de démarrage. Je vous répondrai rapidement pour voir si je peux vous aider.
 
-### 8. Footer
+### 7. Footer
 
 Required elements:
 

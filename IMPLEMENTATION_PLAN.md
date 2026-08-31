@@ -140,12 +140,10 @@ Implement these sections in order:
 1. Navigation
 2. Hero
 3. Services
-4. Why Work With Me
+4. Qui suis-je
 5. Method
-6. About
-7. Proof / Technologies
-8. Contact
-9. Footer
+6. Contact
+7. Footer
 
 ### Expected Components
 
@@ -153,13 +151,13 @@ Implement these sections in order:
 src/components/Navigation.astro
 src/components/Hero.astro
 src/components/Services.astro
-src/components/WhyWorkWithMe.astro
-src/components/Method.astro
 src/components/About.astro
-src/components/Proof.astro
+src/components/Method.astro
 src/components/Contact.astro
 src/components/Footer.astro
 ```
+
+`WhyWorkWithMe.astro` and `Proof.astro` may remain in the repository for now, but they are not rendered in version 1.
 
 ### Acceptance Criteria
 
@@ -223,15 +221,11 @@ Present clear freelance services.
 
 ### Service Cards
 
-Implement 3 cards first:
+Implement exactly 3 equal-weight cards:
 
 1. Cloud & Infrastructure Automation
 2. CI/CD & Industrialisation
 3. Kubernetes & Platform Engineering
-
-Optional fourth card:
-
-4. Audit Infrastructure & Fiabilité
 
 ### Card Structure
 
@@ -250,16 +244,19 @@ Each card should include:
 - No long paragraphs
 - Technical language remains understandable
 
-## Phase 6 — Why Work With Me Section
+## Phase 6 — Qui suis-je Section
 
 ### Goal
 
-Build credibility without turning the page into a résumé.
+Humanize the site and build credibility in one concise section without turning the page into a résumé.
 
 ### Required Content
 
 Mention:
 
+- Badis Merakchi
+- Consultant Cloud & DevOps
+- Based near Geneva
 - 4 years at Oracle Geneva
 - Cloud infrastructure background
 - Swiss client context
@@ -270,9 +267,11 @@ Mention:
 ### Acceptance Criteria
 
 - Section builds trust
+- Section label is `// QUI SUIS-JE`
 - Claims remain accurate
 - Tone is confident but not exaggerated
 - No confidential client names are used
+- No separate credibility or proof section is rendered
 
 ## Phase 7 — Method Section
 
@@ -292,61 +291,11 @@ Show a simple collaboration process.
 - Process is easy to understand
 - Client knows what happens next
 - Section increases trust and conversion
+- Steps are displayed horizontally from `01` to `04` on desktop
+- A subtle dashed connector runs horizontally between the desktop steps
+- Steps remain stacked and readable on mobile
 
-## Phase 8 — About Section
-
-### Goal
-
-Humanize the site while staying commercial.
-
-### Required Content
-
-Mention:
-
-- Badis Merakchi
-- Consultant Cloud & DevOps
-- Based near Geneva
-- Infrastructure automation
-- CI/CD
-- Cloud environments
-- Platform Engineering foundations
-- Practical delivery mindset
-
-### Acceptance Criteria
-
-- Section is concise
-- Section does not duplicate the hero
-- Section does not become a full CV
-
-## Phase 9 — Proof / Technologies Section
-
-### Goal
-
-Give technical credibility.
-
-### Include
-
-- Technologies
-- Environment categories
-- Experience points
-- Existing links if available
-
-### Suggested Categories
-
-- Cloud: AWS, Azure, OCI
-- IaC: Terraform, Ansible
-- Containers: Docker, Kubernetes, Helm
-- CI/CD: GitHub Actions, GitLab CI
-- Systems: Linux, Bash, Networking basics
-- Observability: Prometheus, Grafana, Logs, Metrics
-
-### Acceptance Criteria
-
-- Technology list is readable
-- No unsupported expertise claims
-- Section supports credibility without overwhelming visitors
-
-## Phase 10 — Contact Section
+## Phase 8 — Contact Section
 
 ### Goal
 
@@ -387,7 +336,7 @@ Décrivez votre besoin *
 - No fake backend behavior
 - CTA works
 
-## Phase 11 — SEO Metadata
+## Phase 9 — SEO Metadata
 
 ### Goal
 
@@ -422,7 +371,7 @@ Consultant Cloud, DevOps et Platform Engineering basé près de Genève. Infrast
 - Heading hierarchy is clean
 - Links are descriptive
 
-## Phase 12 — Responsive Polish
+## Phase 10 — Responsive Polish
 
 ### Goal
 
@@ -446,7 +395,7 @@ Ensure the site works well on mobile and desktop.
 - No horizontal scroll
 - CTAs remain visible and usable
 
-## Phase 13 — Performance & Accessibility
+## Phase 11 — Performance & Accessibility
 
 ### Goal
 
@@ -469,7 +418,7 @@ Keep the site fast, accessible and clean.
 - No accessibility blocker visible
 - No unnecessary third-party scripts
 
-## Phase 14 — Deployment Readiness
+## Phase 12 — Deployment Readiness
 
 ### Goal
 
@@ -528,11 +477,11 @@ Implement the services section with 3 service cards and responsive layout.
 
 ### Task 6
 
-Implement the credibility, method and about sections.
+Implement the single `Qui suis-je` credibility section and the four-step horizontal method timeline.
 
 ### Task 7
 
-Implement the proof / technologies and contact sections.
+Implement the static contact section and remove legacy credibility/proof sections from the rendered page.
 
 ### Task 8
 

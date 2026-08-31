@@ -1,11 +1,29 @@
+---
+const credibilityCards = [
+  {
+    title: "Formateur",
+    text: "Pédagogie & transfert de compétences",
+  },
+  {
+    title: "Cloud & Infrastructure",
+    text: "Terraform · AWS · Azure · OCI",
+  },
+  {
+    title: "DevOps Delivery",
+    text: "CI/CD · Docker · Automatisation",
+  },
+  {
+    title: "Réactivité",
+    text: "Disponible & réponse sous 24h",
+  },
+];
+---
+
 <section id="about" class="content-container section-space scroll-mt-24" aria-labelledby="about-title">
-  <div class="grid gap-12 lg:grid-cols-[0.48fr_1fr] lg:items-start lg:gap-20">
-    <div class="lg:pt-2">
-      <p class="eyebrow">// À PROPOS</p>
-      <div class="mt-8 hidden h-px w-24 bg-gradient-to-r from-accent/70 to-transparent lg:block" aria-hidden="true"></div>
-    </div>
-    <div class="max-w-3xl">
-      <h2 id="about-title" class="text-heading font-semibold text-balance text-ink">
+  <div class="grid gap-14 lg:grid-cols-[minmax(0,1.08fr)_minmax(24rem,0.92fr)] lg:items-start lg:gap-20">
+    <div class="max-w-2xl">
+      <p class="eyebrow">// QUI SUIS-JE</p>
+      <h2 id="about-title" class="mt-6 text-heading font-semibold text-balance text-ink">
         Consultant indépendant,<br />basé près de Genève
       </h2>
       <p class="mt-8 text-lead font-medium text-ink/90">
@@ -14,7 +32,7 @@
         fondations Platform Engineering.
       </p>
 
-      <div class="mt-12 grid gap-8 border-t border-line pt-9 sm:grid-cols-2">
+      <div class="mt-10 space-y-5 border-t border-line pt-8">
         <p class="leading-7 text-muted">
           Mon expérience m’a amené à travailler dans des contextes techniques exigeants, avec une
           attention particulière portée à la fiabilité, à la documentation et à la clarté
@@ -27,5 +45,16 @@
         </p>
       </div>
     </div>
+
+    <ul class="grid gap-4 sm:grid-cols-2 lg:pt-9" aria-label="Repères de crédibilité" role="list">
+      {
+        credibilityCards.map((card) => (
+          <li class="flex min-h-32 flex-col justify-between rounded-2xl border border-line bg-surface/70 p-5 transition-colors hover:border-line-strong hover:bg-surface-raised/70 sm:p-6">
+            <h3 class="text-lg font-semibold tracking-[-0.02em] text-ink">{card.title}</h3>
+            <p class="mt-5 text-sm leading-6 text-muted">{card.text}</p>
+          </li>
+        ))
+      }
+    </ul>
   </div>
 </section>

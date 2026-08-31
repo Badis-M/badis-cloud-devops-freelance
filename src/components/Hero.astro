@@ -1,69 +1,60 @@
 <section
   id="hero"
-  class="relative isolate min-h-[calc(100svh-4.5rem)] scroll-mt-28 overflow-hidden border-b border-line"
+  class="relative isolate scroll-mt-28 overflow-hidden border-b border-line"
   aria-labelledby="hero-title"
 >
   <div
-    class="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_78%_30%,rgba(37,99,235,0.18),transparent_30rem)]"
-    aria-hidden="true"
-  ></div>
-  <div
-    class="pointer-events-none absolute top-0 right-[24%] -z-10 hidden h-full w-px bg-gradient-to-b from-transparent via-accent/25 to-transparent lg:block"
+    class="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_50%_5%,rgba(37,99,235,0.2),transparent_38rem)]"
     aria-hidden="true"
   ></div>
 
-  <div class="content-container flex min-h-[calc(100svh-4.5rem)] items-center py-20 sm:py-24 lg:py-32">
-    <div class="grid w-full gap-14 lg:grid-cols-[minmax(0,1.3fr)_22rem] lg:items-end lg:gap-20">
-      <div class="max-w-5xl">
-        <p class="eyebrow availability-pill">CONSULTANT DISPONIBLE · GENÈVE & REMOTE</p>
-        <h1 id="hero-title" class="mt-8 text-display font-semibold text-balance text-ink">
-          Consultant Cloud & DevOps<br />
-          <span class="bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
-            à votre service
-          </span>
-        </h1>
-        <p class="mt-9 max-w-2xl text-lead text-muted">
-          J’aide les entreprises à automatiser, fiabiliser et industrialiser leurs infrastructures
-          cloud, leurs pipelines CI/CD et leurs plateformes de déploiement.
-        </p>
+  <div class="content-container flex items-center justify-center py-16 sm:py-20 lg:py-24">
+    <div class="mx-auto flex w-full max-w-6xl flex-col items-center text-center">
+      <p class="eyebrow availability-pill">CONSULTANT DISPONIBLE · GENÈVE & REMOTE</p>
 
-        <div class="mt-11 flex flex-col gap-3 sm:flex-row">
-          <a class="button button-primary w-full sm:w-auto" href="#contact">
-            Discuter de votre besoin
-          </a>
-          <a class="button button-secondary w-full sm:w-auto" href="#services">
-            Voir les services <span aria-hidden="true">→</span>
-          </a>
-        </div>
+      <h1
+        id="hero-title"
+        class="mt-7 max-w-6xl text-[clamp(2.9rem,6.2vw,5.75rem)] leading-[0.98] font-semibold tracking-[-0.055em] text-balance text-ink"
+      >
+        Consultant
+        <span class="bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
+          Cloud & DevOps
+        </span><br />
+        à votre service
+      </h1>
+
+      <p class="mt-6 max-w-3xl text-lead text-balance text-muted sm:mt-7">
+        J’aide les entreprises à automatiser, fiabiliser et industrialiser leurs infrastructures
+        cloud, leurs pipelines CI/CD et leurs plateformes de déploiement.
+      </p>
+
+      <div class="mt-8 flex w-full flex-col justify-center gap-3 sm:w-auto sm:flex-row">
+        <a class="button button-primary w-full sm:w-auto" href="#contact">
+          Discuter de votre besoin
+        </a>
+        <a class="button button-secondary w-full sm:w-auto" href="#services">
+          Voir les services <span aria-hidden="true">→</span>
+        </a>
       </div>
 
-      <aside class="surface-card subtle-glow p-px lg:mb-5" aria-label="Indicateurs de confiance">
-        <div class="rounded-[calc(var(--radius-card)-1px)] bg-surface/88 p-6 sm:p-7">
-          <div class="flex items-center justify-between">
-            <p class="font-mono text-xs font-semibold tracking-[0.2em] text-accent uppercase">
-              Repères
-            </p>
-            <span class="size-2 rounded-full bg-accent shadow-[0_0_18px_rgba(96,165,250,0.8)]" aria-hidden="true"></span>
-          </div>
-          <dl class="mt-5 divide-y divide-line">
-            <div class="py-4 first:pt-0">
-              <dt class="text-xs font-medium tracking-[0.12em] text-subtle uppercase">Technologies</dt>
-              <dd class="mt-2 font-semibold text-ink">Terraform · CI/CD · Kubernetes</dd>
-            </div>
-            <div class="py-4">
-              <dt class="text-xs font-medium tracking-[0.12em] text-subtle uppercase">Zone</dt>
-              <dd class="mt-2 font-semibold text-ink">Genève · Suisse romande · Remote</dd>
-            </div>
-            <div class="pt-4">
-              <dt class="text-xs font-medium tracking-[0.12em] text-subtle uppercase">Disponibilité</dt>
-              <dd class="mt-2 flex items-center gap-2 font-semibold text-ink">
-                <span class="size-2 rounded-full bg-accent shadow-[0_0_18px_rgba(103,232,249,0.8)]" aria-hidden="true"></span>
-                Réponse &lt; 24h
-              </dd>
-            </div>
-          </dl>
-        </div>
-      </aside>
+      <ul
+        class="mt-9 flex max-w-4xl flex-wrap justify-center gap-2.5 text-sm text-muted sm:mt-10"
+        aria-label="Indicateurs de confiance"
+      >
+        <li class="rounded-full border border-line bg-white/[0.025] px-4 py-2.5">
+          Terraform · CI/CD · Kubernetes
+        </li>
+        <li class="rounded-full border border-line bg-white/[0.025] px-4 py-2.5">
+          Genève · Suisse romande · Remote
+        </li>
+        <li class="flex items-center gap-2 rounded-full border border-line bg-white/[0.025] px-4 py-2.5 text-ink">
+          <span
+            class="size-1.5 rounded-full bg-accent shadow-[0_0_12px_rgba(96,165,250,0.7)]"
+            aria-hidden="true"
+          ></span>
+          Réponse &lt; 24h
+        </li>
+      </ul>
     </div>
   </div>
 </section>

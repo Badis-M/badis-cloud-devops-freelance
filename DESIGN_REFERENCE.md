@@ -23,16 +23,17 @@ The new website should feel like:
 - Credible enough for technical managers
 - Focused on contact conversion
 
-The design should strongly follow the same rhythm as the reference site:
+The design should strongly follow the same simplified rhythm as the reference site:
 
-1. Strong hero section
-2. Immediate availability / location signal
-3. Clear CTA buttons
-4. Service cards
-5. About / credibility section
-6. Method section
-7. Contact form
-8. Response time and mission availability
+1. Minimal navigation
+2. Compact centered hero with availability, CTAs and trust indicators
+3. Three equal-weight service cards
+4. One concise `Qui suis-je` / credibility section
+5. Four-step method timeline
+6. Contact form with availability and response-time information
+7. Minimal footer
+
+Do not render separate `Why Work With Me` or `Proof / Technologies` sections in version 1.
 
 ## What To Reproduce
 
@@ -152,7 +153,7 @@ For the Cloud / DevOps site, use:
 
 ```text
 // SERVICES
-// POURQUOI TRAVAILLER ENSEMBLE
+// QUI SUIS-JE
 // MÉTHODE
 // CONTACT
 ```
@@ -257,40 +258,15 @@ En savoir plus →
 
 Do not write long paragraphs inside cards.
 
-## 7. Featured Card
+## 7. Equal Service Cards
 
-The reference site highlights one card as more premium/popular.
-
-For Badis, the featured card should probably be:
-
-```text
-CI/CD & Industrialisation
-```
-
-or:
-
-```text
-Cloud & Infrastructure Automation
-```
-
-Recommended badge:
-
-```text
-POPULAIRE
-```
-
-Alternative badge:
-
-```text
-MISSION COURANTE
-```
-
-Use the badge sparingly.
+Use three service cards with the same visual weight. Keep borders, surfaces, spacing and hover states consistent, without a featured badge or elevated card.
 
 ## 8. About Section
 
 The about section should mirror the reference structure:
 
+- `// QUI SUIS-JE` section label
 - Strong heading
 - Short credibility paragraph
 - Second paragraph explaining independent/pragmatic approach
@@ -342,6 +318,8 @@ Plan d’action
 04
 Implémentation
 ```
+
+On desktop, place the four steps in one horizontal row and connect `01` to `04` with a subtle dashed line. On mobile, stack the steps vertically and preserve clear reading order.
 
 Adapted descriptions:
 
@@ -600,8 +578,8 @@ For version 1, prioritize:
 
 1. Strong hero
 2. Clean service cards
-3. Clear method section
-4. Credible about section
+3. Credible `Qui suis-je` section
+4. Clear horizontal method section
 5. Effective contact section
 6. Responsive layout
 7. Basic SEO
