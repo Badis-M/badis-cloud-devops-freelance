@@ -22,7 +22,7 @@ const timelineItems = [
 ];
 
 const fieldClass =
-  "mt-2 min-h-13 w-full rounded-xl border border-line bg-white/[0.025] px-4 py-3 text-sm text-ink shadow-inner shadow-black/20 transition-colors placeholder:text-subtle focus:border-accent disabled:cursor-not-allowed disabled:opacity-70";
+  "mt-2 min-h-13 w-full rounded-xl border border-line bg-white/[0.025] px-4 py-3 text-sm text-ink shadow-inner shadow-black/20 transition-colors placeholder:text-subtle focus:border-accent";
 ---
 
 <section id="contact" class="section-band scroll-mt-24" aria-labelledby="contact-title">
@@ -41,19 +41,21 @@ const fieldClass =
   <div class="mt-16 grid gap-6 lg:mt-20 lg:grid-cols-2 lg:items-start">
     <form
       class="surface-card subtle-glow p-6 sm:p-8 lg:p-10"
+      action="https://formspree.io/f/xyeykrvl"
+      method="POST"
       aria-labelledby="contact-form-title"
-      aria-describedby="contact-form-status"
+      aria-describedby="contact-form-helper"
     >
+      <input type="hidden" name="_subject" value="Nouvelle demande consulting — badismerakchi.com" />
+      <!-- Add Turnstile or another spam protection here if spam becomes an issue. -->
+
       <div class="border-b border-line pb-7">
         <h3 id="contact-form-title" class="text-2xl font-semibold tracking-[-0.025em] text-ink">
           Votre demande
         </h3>
-        <p id="contact-form-status" class="mt-3 max-w-md text-sm leading-6 text-muted">
-          Formulaire en préparation — aucun message n’est transmis pour le moment.
-        </p>
       </div>
 
-      <fieldset disabled class="mt-7 grid gap-5 sm:grid-cols-2">
+      <fieldset class="mt-7 grid gap-5 sm:grid-cols-2">
         <legend class="sr-only">Informations de contact et détails de la demande</legend>
 
         <label class="block font-mono text-[0.7rem] font-semibold tracking-[0.12em] text-muted uppercase" for="contact-name">
@@ -62,7 +64,7 @@ const fieldClass =
             id="contact-name"
             class={fieldClass}
             type="text"
-            name="fullName"
+            name="name"
             autocomplete="name"
             required
           />
@@ -74,7 +76,7 @@ const fieldClass =
             id="contact-organization"
             class={fieldClass}
             type="text"
-            name="organization"
+            name="company"
             autocomplete="organization"
           />
         </label>
@@ -116,15 +118,15 @@ const fieldClass =
         </label>
 
         <div class="pt-2 sm:col-span-2">
-          <button
-            class="button button-primary w-full disabled:cursor-not-allowed disabled:opacity-65"
-            type="submit"
-            disabled
-          >
+          <button class="button button-primary w-full" type="submit">
             Envoyer une demande
           </button>
         </div>
       </fieldset>
+
+      <p id="contact-form-helper" class="mt-5 text-sm leading-6 text-muted">
+        Votre message sera transmis par email. Je vous répondrai dès que possible.
+      </p>
     </form>
 
     <aside class="surface-card p-7 sm:p-8 lg:p-10" aria-label="Disponibilité et délais indicatifs">
