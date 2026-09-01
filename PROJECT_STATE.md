@@ -15,6 +15,7 @@ Documentation priority:
 - Primary goal: generate qualified commercial leads for freelance consulting missions.
 - The site is commercial and service-oriented, not a CV or job-search page.
 - The implementation remains a static Astro, TypeScript and Tailwind CSS website.
+- The site is available in French and English through static routes.
 
 ## Live Deployment
 
@@ -35,6 +36,15 @@ The rendered one-page structure must remain:
 5. Méthode
 6. Contact
 7. Footer
+
+## Language and Routing
+
+- French remains the primary language at `/`.
+- English is available at `/en/`.
+- The navigation includes a discreet language switch between both routes.
+- No browser-language redirect is used.
+- Shared page copy is maintained in `src/content/site.fr.ts` and `src/content/site.en.ts`.
+- Both routes use the same Astro components and keep the same section order.
 
 ## Removed or Deprecated Sections
 
@@ -71,8 +81,10 @@ The rendered one-page structure must remain:
 ## Current Metadata
 
 - Browser title: `Consultant Cloud | Badis Merakchi`.
+- English browser title: `Cloud Consultant | Badis Merakchi`.
 - Favicon: `/favicon.png?v=2`.
-- Primary language: French (`fr`).
+- Primary language: French (`fr`), with an English (`en`) version at `/en/`.
+- Canonical and alternate-language links are configured for both routes.
 - SEO should remain focused on Cloud, DevOps, freelance consulting, Geneva and Switzerland.
 - Existing metadata and favicon configuration should not change unless explicitly requested.
 
@@ -96,6 +108,8 @@ The rendered one-page structure must remain:
 - Do not change the Formspree endpoint unless explicitly requested.
 - Do not reintroduce removed sections unless explicitly requested.
 - Preserve the current page structure unless explicitly requested.
+- Preserve the French `/` and English `/en/` static routes unless explicitly requested.
+- Keep shared copy in the typed language files instead of duplicating component markup.
 - Preserve the approved design direction unless explicitly requested.
 - Keep the build passing.
 - Do not commit secrets, credentials or private local state.

@@ -1,26 +1,11 @@
 ---
-const serviceOptions = [
-  "Cloud & Infrastructure Automation",
-  "CI/CD & Industrialisation",
-  "Kubernetes & Platform Engineering",
-  "Formation & Transfert de compétences",
-  "Audit Infrastructure & Fiabilité",
-  "Autre besoin Cloud / DevOps",
-];
+import type { SiteContent } from "../content/types";
 
-const availabilityItems = [
-  "Genève · Suisse romande · Remote",
-  "Mission courte ou longue durée",
-  "Réponse < 24h",
-  "Intervention sur site ou remote",
-];
+interface Props {
+  content: SiteContent["contact"];
+}
 
-const timelineItems = [
-  { label: "Première réponse", value: "< 24h" },
-  { label: "Échange de cadrage", value: "1–2 jours" },
-  { label: "Proposition ou plan d’action", value: "2–3 jours" },
-  { label: "Démarrage mission", value: "Selon disponibilité" },
-];
+const { content } = Astro.props;
 
 const fieldClass =
   "mt-2 min-h-13 w-full rounded-xl border border-line bg-white/[0.025] px-4 py-3 text-sm text-ink shadow-inner shadow-black/20 transition-colors placeholder:text-subtle focus:border-accent";
@@ -29,13 +14,12 @@ const fieldClass =
 <section id="contact" class="section-band scroll-mt-24" aria-labelledby="contact-title">
   <div class="content-container section-space">
     <div class="mx-auto max-w-4xl text-center">
-      <p class="eyebrow">// CONTACT</p>
+      <p class="eyebrow">{content.label}</p>
       <h2 id="contact-title" class="mt-6 text-heading font-semibold text-balance text-ink">
-        Parlons de votre<br class="hidden sm:block" /> infrastructure cloud
+        {content.heading[0]}<br class="hidden sm:block" /> {content.heading[1]}
       </h2>
       <p class="mx-auto mt-7 max-w-3xl text-lead text-muted">
-        Décrivez brièvement votre besoin, votre contexte technique et votre horizon de démarrage. Je
-        vous répondrai rapidement pour voir si je peux vous aider.
+        {content.introduction}
       </p>
     </div>
 
@@ -47,21 +31,22 @@ const fieldClass =
       method="POST"
       aria-labelledby="contact-form-title"
       aria-describedby="contact-form-helper"
+      data-error-message={content.errorMessage}
     >
-      <input type="hidden" name="_subject" value="Nouvelle demande consulting — badismerakchi.com" />
+      <input type="hidden" name="_subject" value={content.subject} />
       <!-- Add Turnstile or another spam protection here if spam becomes an issue. -->
 
       <div class="border-b border-line pb-7">
         <h3 id="contact-form-title" class="text-2xl font-semibold tracking-[-0.025em] text-ink">
-          Votre demande
+          {content.formTitle}
         </h3>
       </div>
 
       <fieldset class="mt-7 grid gap-5 sm:grid-cols-2">
-        <legend class="sr-only">Informations de contact et détails de la demande</legend>
+        <legend class="sr-only">{content.formLegend}</legend>
 
         <label class="block font-mono text-[0.7rem] font-semibold tracking-[0.12em] text-muted uppercase" for="contact-name">
-          Prénom & Nom *
+          {content.fields.name}
           <input
             id="contact-name"
             class={fieldClass}
@@ -73,7 +58,7 @@ const fieldClass =
         </label>
 
         <label class="block font-mono text-[0.7rem] font-semibold tracking-[0.12em] text-muted uppercase" for="contact-organization">
-          Entreprise / Organisation
+          {content.fields.company}
           <input
             id="contact-organization"
             class={fieldClass}
@@ -84,7 +69,7 @@ const fieldClass =
         </label>
 
         <label class="block font-mono text-[0.7rem] font-semibold tracking-[0.12em] text-muted uppercase sm:col-span-2" for="contact-email">
-          Email professionnel *
+          {content.fields.email}
           <input
             id="contact-email"
             class={fieldClass}
@@ -96,20 +81,20 @@ const fieldClass =
         </label>
 
         <label class="block font-mono text-[0.7rem] font-semibold tracking-[0.12em] text-muted uppercase" for="contact-service">
-          Service souhaité *
+          {content.fields.service}
           <select id="contact-service" class={fieldClass} name="service" required>
-            <option value="">Sélectionnez un service</option>
-            {serviceOptions.map((service) => <option value={service}>{service}</option>)}
+            <option value="">{content.fields.servicePlaceholder}</option>
+            {content.serviceOptions.map((service) => <option value={service}>{service}</option>)}
           </select>
         </label>
 
         <label class="block font-mono text-[0.7rem] font-semibold tracking-[0.12em] text-muted uppercase" for="contact-budget">
-          Budget estimé
+          {content.fields.budget}
           <input id="contact-budget" class={fieldClass} type="text" name="budget" />
         </label>
 
         <label class="block font-mono text-[0.7rem] font-semibold tracking-[0.12em] text-muted uppercase sm:col-span-2" for="contact-message">
-          Décrivez votre besoin *
+          {content.fields.message}
           <textarea
             id="contact-message"
             class={`${fieldClass} min-h-36 resize-y`}
@@ -124,8 +109,10 @@ const fieldClass =
             id="contact-submit"
             class="button button-primary w-full disabled:cursor-wait disabled:opacity-70"
             type="submit"
+            data-default-label={content.submitLabel}
+            data-submitting-label={content.submittingLabel}
           >
-            Envoyer une demande
+            {content.submitLabel}
           </button>
           <p
             id="contact-form-error"
@@ -138,23 +125,23 @@ const fieldClass =
       </fieldset>
 
       <p id="contact-form-helper" class="mt-5 text-sm leading-6 text-muted">
-        Votre message sera transmis par email. Je vous répondrai dès que possible.
+        {content.helperText}
       </p>
     </form>
 
-    <aside class="surface-card p-7 sm:p-9 lg:p-11" aria-label="Disponibilité et délais indicatifs">
+    <aside class="surface-card p-7 sm:p-9 lg:p-11" aria-label={content.asideAriaLabel}>
       <div>
         <div class="flex items-center gap-3">
           <span
             class="h-3 w-3 shrink-0 rounded-full bg-accent shadow-[0_0_16px_rgba(103,232,249,0.65)]"
             aria-hidden="true"
           ></span>
-          <h3 class="font-semibold text-ink">Disponible pour de nouvelles missions</h3>
+          <h3 class="font-semibold text-ink">{content.availabilityTitle}</h3>
         </div>
 
         <ul class="mt-9 divide-y divide-line" role="list">
           {
-            availabilityItems.map((item) => (
+            content.availabilityItems.map((item) => (
               <li class="flex items-start gap-3.5 py-4.5 first:pt-0 last:pb-0">
                 <span class="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" aria-hidden="true" />
                 <span class="text-sm leading-7 text-muted">{item}</span>
@@ -166,11 +153,11 @@ const fieldClass =
 
       <div class="mt-11 border-t border-line pt-10">
         <h3 class="font-mono text-xs font-semibold tracking-[0.18em] text-subtle uppercase">
-          Délais indicatifs
+          {content.timelineTitle}
         </h3>
         <dl class="mt-7 divide-y divide-line rounded-2xl border border-line bg-canvas/45 px-6 py-2 sm:px-7">
           {
-            timelineItems.map((item) => (
+            content.timelineItems.map((item) => (
               <div class="grid gap-2 py-5 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center sm:gap-6">
                 <dt class="text-sm leading-6 text-muted">{item.label}</dt>
                 <dd class="font-mono text-sm font-semibold leading-6 text-ink sm:text-right">{item.value}</dd>
@@ -193,13 +180,12 @@ const fieldClass =
   <div
     class="rounded-[var(--radius-card)] border border-line-strong bg-surface-raised p-7 shadow-[0_32px_100px_rgb(0_0_0/0.55)] sm:p-8"
   >
-    <p class="eyebrow">// CONFIRMATION</p>
+    <p class="eyebrow">{content.confirmationLabel}</p>
     <h3 id="contact-success-title" class="mt-5 text-2xl font-semibold tracking-[-0.025em] text-ink">
-      Message bien reçu
+      {content.successTitle}
     </h3>
     <p id="contact-success-description" class="mt-4 leading-7 text-muted">
-      Merci pour votre demande. J’ai bien reçu les informations transmises et je vous recontacterai
-      sous 24h pour échanger sur votre besoin.
+      {content.successMessage}
     </p>
     <button
       id="contact-success-close"
@@ -207,7 +193,7 @@ const fieldClass =
       type="button"
       autofocus
     >
-      Fermer
+      {content.closeLabel}
     </button>
   </div>
 </dialog>
@@ -226,14 +212,16 @@ const fieldClass =
     successDialog instanceof HTMLDialogElement &&
     closeButton instanceof HTMLButtonElement
   ) {
-    const defaultButtonText = "Envoyer une demande";
+    const defaultButtonText = submitButton.dataset.defaultLabel ?? submitButton.textContent ?? "";
+    const submittingButtonText = submitButton.dataset.submittingLabel ?? defaultButtonText;
+    const submissionErrorMessage = form.dataset.errorMessage ?? "";
 
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
       errorMessage.hidden = true;
       errorMessage.textContent = "";
       submitButton.disabled = true;
-      submitButton.textContent = "Envoi en cours...";
+      submitButton.textContent = submittingButtonText;
 
       try {
         const response = await fetch(form.action, {
@@ -253,8 +241,7 @@ const fieldClass =
         closeButton.focus();
       } catch (error) {
         console.error("Contact form submission failed.", error);
-        errorMessage.textContent =
-          "L’envoi a échoué. Vous pouvez réessayer ou me contacter via LinkedIn.";
+        errorMessage.textContent = submissionErrorMessage;
         errorMessage.hidden = false;
       } finally {
         submitButton.disabled = false;

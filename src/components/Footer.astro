@@ -1,3 +1,13 @@
+---
+import type { SiteContent } from "../content/types";
+
+interface Props {
+  content: SiteContent["footer"];
+}
+
+const { content } = Astro.props;
+---
+
 <footer id="site-footer" class="relative overflow-hidden border-t border-line bg-canvas/90">
   <div
     class="pointer-events-none absolute top-0 right-0 h-56 w-96 bg-[radial-gradient(circle_at_top_right,rgba(37,99,235,0.08),transparent_70%)]"
@@ -16,19 +26,19 @@
           Badis Merakchi
         </a>
         <p class="mt-4 text-sm leading-6 text-muted">
-          Consultant Cloud & DevOps freelance · Genève
+          {content.tagline}
         </p>
       </div>
 
-      <nav aria-label="Navigation de pied de page">
+      <nav aria-label={content.navigationAriaLabel}>
         <p class="font-mono text-[0.65rem] font-semibold tracking-[0.2em] text-subtle uppercase">
-          Navigation
+          {content.navigationTitle}
         </p>
         <ul class="mt-5 grid gap-3 text-sm text-muted">
-          <li><a class="transition-colors hover:text-ink" href="#services">Services</a></li>
-          <li><a class="transition-colors hover:text-ink" href="#about">À propos</a></li>
-          <li><a class="transition-colors hover:text-ink" href="#method">Méthode</a></li>
-          <li><a class="transition-colors hover:text-ink" href="#contact">Contact</a></li>
+          <li><a class="transition-colors hover:text-ink" href="#services">{content.services}</a></li>
+          <li><a class="transition-colors hover:text-ink" href="#about">{content.about}</a></li>
+          <li><a class="transition-colors hover:text-ink" href="#method">{content.method}</a></li>
+          <li><a class="transition-colors hover:text-ink" href="#contact">{content.contact}</a></li>
         </ul>
       </nav>
 
@@ -37,7 +47,7 @@
           id="footer-links-title"
           class="font-mono text-[0.65rem] font-semibold tracking-[0.2em] text-subtle uppercase"
         >
-          Liens
+          {content.linksTitle}
         </p>
         <ul class="mt-5 grid gap-3 text-sm">
           <li>
@@ -47,7 +57,7 @@
               target="_blank"
               rel="noreferrer"
             >
-              Portfolio
+              {content.portfolio}
             </a>
           </li>
           <li>
@@ -76,7 +86,7 @@
 
     <div class="mt-12 border-t border-line pt-7">
       <p class="text-xs leading-5 text-subtle">
-        © 2026 Badis Merakchi — Tous droits réservés.
+        {content.copyright}
       </p>
     </div>
   </div>

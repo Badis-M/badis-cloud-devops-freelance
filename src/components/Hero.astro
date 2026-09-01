@@ -1,3 +1,13 @@
+---
+import type { SiteContent } from "../content/types";
+
+interface Props {
+  content: SiteContent["hero"];
+}
+
+const { content } = Astro.props;
+---
+
 <section
   id="hero"
   class="relative isolate scroll-mt-28 overflow-hidden border-b border-line"
@@ -10,52 +20,51 @@
 
   <div class="content-container flex items-center justify-center py-16 sm:py-20 lg:py-24">
     <div class="mx-auto flex w-full max-w-5xl flex-col items-center text-center">
-      <p class="eyebrow availability-pill">SUISSE ROMANDE · GENÈVE · FRANCE & REMOTE</p>
+      <p class="eyebrow availability-pill">{content.availability}</p>
 
       <h1
         id="hero-title"
         class="mt-7 max-w-[56rem] text-[clamp(2.45rem,4.8vw,4.6rem)] leading-[1.04] font-semibold tracking-[-0.04em] text-balance text-ink"
       >
         <span class="block md:whitespace-nowrap">
-          Consultant <span
+          <span>{content.headline.leading ? `${content.headline.leading} ` : ""}</span><span
             class="bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent"
           >
-            Cloud & DevOps
-          </span>
+            {content.headline.accent}
+          </span><span>{content.headline.trailing ? ` ${content.headline.trailing}` : ""}</span>
         </span>
-        <span class="block">pour vos infrastructures</span>
+        <span class="block">{content.headline.secondLine}</span>
       </h1>
 
       <p class="mt-6 max-w-2xl text-lead text-balance text-muted sm:mt-7">
-        J’aide les entreprises à automatiser, fiabiliser et industrialiser leurs infrastructures
-        cloud, leurs pipelines CI/CD et leurs plateformes de déploiement.
+        {content.description}
       </p>
 
       <div class="mt-8 flex w-full flex-col justify-center gap-3 sm:w-auto sm:flex-row">
         <a class="button button-primary w-full sm:w-auto" href="#contact">
-          Discuter de votre besoin
+          {content.primaryCta}
         </a>
         <a class="button button-secondary w-full sm:w-auto" href="#services">
-          Voir les services <span aria-hidden="true">→</span>
+          {content.secondaryCta} <span aria-hidden="true">→</span>
         </a>
       </div>
 
       <ul
         class="mt-9 flex max-w-3xl flex-wrap justify-center gap-2.5 text-sm text-muted sm:mt-10"
-        aria-label="Indicateurs de confiance"
+        aria-label={content.trustAriaLabel}
       >
         <li class="rounded-full border border-line bg-white/[0.025] px-4 py-2.5">
-          Terraform · CI/CD · Kubernetes
+          {content.trustItems[0]}
         </li>
         <li class="rounded-full border border-line bg-white/[0.025] px-4 py-2.5">
-          Genève · Suisse romande · Remote
+          {content.trustItems[1]}
         </li>
         <li class="flex items-center gap-2 rounded-full border border-line bg-white/[0.025] px-4 py-2.5 text-ink">
           <span
             class="size-1.5 rounded-full bg-accent shadow-[0_0_12px_rgba(96,165,250,0.7)]"
             aria-hidden="true"
           ></span>
-          Réponse &lt; 24h
+          {content.trustItems[2]}
         </li>
       </ul>
     </div>
