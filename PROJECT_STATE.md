@@ -78,6 +78,15 @@ The rendered one-page structure must remain:
 - There is no analytics integration.
 - There are no unnecessary runtime dependencies.
 
+## Security Headers
+
+- Cloudflare Workers Static Assets security headers are defined in `public/_headers` for all routes.
+- HSTS starts conservatively at `max-age=86400`, without `includeSubDomains` or `preload`.
+- The Content Security Policy allows the current inline Astro script and styles while the site is tested.
+- CSP `connect-src` and `form-action` explicitly allow `https://formspree.io` so the AJAX contact form and HTML fallback remain functional.
+- Framing, MIME sniffing, referrer leakage and unnecessary browser permissions are restricted.
+- Do not tighten HSTS or remove the inline CSP allowances until the deployed French and English routes and contact form have been verified.
+
 ## Current Metadata
 
 - Browser title: `Consultant Cloud | Badis Merakchi`.
