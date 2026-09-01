@@ -7,9 +7,21 @@ import Hero from "../components/Hero.astro";
 import Method from "../components/Method.astro";
 import Navigation from "../components/Navigation.astro";
 import Services from "../components/Services.astro";
+
+const pageTitle = "Consultant Cloud | Badis Merakchi";
+const pageDescription =
+  "Consultant Cloud, DevOps et Platform Engineering basé près de Genève. Infrastructure as Code, CI/CD, Kubernetes, automatisation cloud et fiabilité opérationnelle.";
+const openGraphTitle = "Badis Merakchi — Consultant Cloud & DevOps Freelance";
+const openGraphDescription =
+  "J’aide les entreprises à automatiser, fiabiliser et industrialiser leurs infrastructures cloud, leurs pipelines CI/CD et leurs plateformes de déploiement.";
 ---
 
-<BaseLayout>
+<BaseLayout
+  title={pageTitle}
+  description={pageDescription}
+  openGraphTitle={openGraphTitle}
+  openGraphDescription={openGraphDescription}
+>
   <Navigation />
   <main id="main-content">
     <Hero />

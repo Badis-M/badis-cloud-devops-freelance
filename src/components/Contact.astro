@@ -40,6 +40,7 @@ const fieldClass =
 
   <div class="mt-16 grid gap-6 lg:mt-20 lg:grid-cols-2 lg:items-start">
     <form
+      id="contact-form"
       class="surface-card subtle-glow p-6 sm:p-8 lg:p-10"
       action="https://formspree.io/f/xyeykrvl"
       method="POST"
@@ -118,9 +119,20 @@ const fieldClass =
         </label>
 
         <div class="pt-2 sm:col-span-2">
-          <button class="button button-primary w-full" type="submit">
+          <button
+            id="contact-submit"
+            class="button button-primary w-full disabled:cursor-wait disabled:opacity-70"
+            type="submit"
+          >
             Envoyer une demande
           </button>
+          <p
+            id="contact-form-error"
+            class="mt-4 text-sm leading-6 text-red-300"
+            role="alert"
+            aria-live="assertive"
+            hidden
+          ></p>
         </div>
       </fieldset>
 
@@ -129,7 +141,7 @@ const fieldClass =
       </p>
     </form>
 
-    <aside class="surface-card p-7 sm:p-8 lg:p-10" aria-label="Disponibilité et délais indicatifs">
+    <aside class="surface-card p-7 sm:p-9 lg:p-11" aria-label="Disponibilité et délais indicatifs">
       <div>
         <div class="flex items-center gap-3">
           <span
@@ -139,28 +151,28 @@ const fieldClass =
           <h3 class="font-semibold text-ink">Disponible pour de nouvelles missions</h3>
         </div>
 
-        <ul class="mt-8 divide-y divide-line" role="list">
+        <ul class="mt-9 divide-y divide-line" role="list">
           {
             availabilityItems.map((item) => (
-              <li class="flex items-start gap-3 py-4 first:pt-0 last:pb-0">
-                <span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" aria-hidden="true" />
-                <span class="text-sm leading-6 text-muted">{item}</span>
+              <li class="flex items-start gap-3.5 py-4.5 first:pt-0 last:pb-0">
+                <span class="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" aria-hidden="true" />
+                <span class="text-sm leading-7 text-muted">{item}</span>
               </li>
             ))
           }
         </ul>
       </div>
 
-      <div class="mt-9 border-t border-line pt-8">
+      <div class="mt-11 border-t border-line pt-10">
         <h3 class="font-mono text-xs font-semibold tracking-[0.18em] text-subtle uppercase">
           Délais indicatifs
         </h3>
-        <dl class="mt-6 divide-y divide-line rounded-xl border border-line bg-canvas/45 px-5 py-1 sm:px-6">
+        <dl class="mt-7 divide-y divide-line rounded-2xl border border-line bg-canvas/45 px-6 py-2 sm:px-7">
           {
             timelineItems.map((item) => (
-              <div class="grid gap-1 py-4 first:pt-0 last:pb-0 sm:grid-cols-[1fr_auto] sm:items-baseline sm:gap-5">
-                <dt class="text-sm text-muted">{item.label}</dt>
-                <dd class="font-mono text-sm font-semibold text-ink">{item.value}</dd>
+              <div class="grid gap-2 py-5 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center sm:gap-6">
+                <dt class="text-sm leading-6 text-muted">{item.label}</dt>
+                <dd class="font-mono text-sm font-semibold leading-6 text-ink sm:text-right">{item.value}</dd>
               </div>
             ))
           }
@@ -170,3 +182,91 @@ const fieldClass =
   </div>
   </div>
 </section>
+
+<dialog
+  id="contact-success-dialog"
+  class="m-auto w-[calc(100%-2rem)] max-w-md border-0 bg-transparent p-0 text-ink backdrop:bg-black/75 backdrop:backdrop-blur-sm"
+  aria-labelledby="contact-success-title"
+  aria-describedby="contact-success-description"
+>
+  <div
+    class="rounded-[var(--radius-card)] border border-line-strong bg-surface-raised p-7 shadow-[0_32px_100px_rgb(0_0_0/0.55)] sm:p-8"
+  >
+    <p class="eyebrow">// CONFIRMATION</p>
+    <h3 id="contact-success-title" class="mt-5 text-2xl font-semibold tracking-[-0.025em] text-ink">
+      Message bien reçu
+    </h3>
+    <p id="contact-success-description" class="mt-4 leading-7 text-muted">
+      Merci pour votre demande. J’ai bien reçu les informations transmises et je vous recontacterai
+      sous 24h pour échanger sur votre besoin.
+    </p>
+    <button
+      id="contact-success-close"
+      class="button button-primary mt-7 w-full"
+      type="button"
+      autofocus
+    >
+      Fermer
+    </button>
+  </div>
+</dialog>
+
+<script>
+  const form = document.querySelector("#contact-form");
+  const submitButton = document.querySelector("#contact-submit");
+  const errorMessage = document.querySelector("#contact-form-error");
+  const successDialog = document.querySelector("#contact-success-dialog");
+  const closeButton = document.querySelector("#contact-success-close");
+
+  if (
+    form instanceof HTMLFormElement &&
+    submitButton instanceof HTMLButtonElement &&
+    errorMessage instanceof HTMLParagraphElement &&
+    successDialog instanceof HTMLDialogElement &&
+    closeButton instanceof HTMLButtonElement
+  ) {
+    const defaultButtonText = "Envoyer une demande";
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      errorMessage.hidden = true;
+      errorMessage.textContent = "";
+      submitButton.disabled = true;
+      submitButton.textContent = "Envoi en cours...";
+
+      try {
+        const response = await fetch(form.action, {
+          method: "POST",
+          body: new FormData(form),
+          headers: {
+            Accept: "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`Formspree returned status ${response.status}.`);
+        }
+
+        form.reset();
+        successDialog.showModal();
+        closeButton.focus();
+      } catch (error) {
+        console.error("Contact form submission failed.", error);
+        errorMessage.textContent =
+          "L’envoi a échoué. Vous pouvez réessayer ou me contacter via LinkedIn.";
+        errorMessage.hidden = false;
+      } finally {
+        submitButton.disabled = false;
+        submitButton.textContent = defaultButtonText;
+      }
+    });
+
+    closeButton.addEventListener("click", () => {
+      successDialog.close();
+    });
+
+    successDialog.addEventListener("close", () => {
+      submitButton.focus();
+    });
+  }
+</script>
