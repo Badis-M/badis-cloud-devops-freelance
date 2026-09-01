@@ -19,3 +19,7 @@ pnpm-debug.log*
 
 # Operating system files
 .DS_Store
+
+# Local project state
+PROJECT_STATE.local.md
+*.local.md

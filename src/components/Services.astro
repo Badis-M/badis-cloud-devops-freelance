@@ -4,11 +4,11 @@ const services = [
     category: "// CLOUD",
     title: "Cloud & Infrastructure Automation",
     description:
-      "Structurez et automatisez vos environnements cloud avec une approche reproductible, maintenable et adaptée à vos contraintes opérationnelles.",
+      "J’interviens sur l’audit, la structuration et l’automatisation de votre infrastructure pour obtenir une base IaC reproductible, maintenable et exploitable par vos équipes.",
     bullets: [
-      "Infrastructure as Code avec Terraform",
-      "Environnements AWS, Azure ou OCI",
-      "Documentation et standards d’exploitation",
+      "Audit et structuration Infrastructure as Code",
+      "Standards Terraform pour AWS, Azure ou OCI",
+      "Documentation d’exploitation et environnements reproductibles",
     ],
     cta: "Parler infrastructure →",
   },
@@ -16,11 +16,11 @@ const services = [
     category: "// DELIVERY",
     title: "CI/CD & Industrialisation",
     description:
-      "Améliorez vos pipelines de build, test et déploiement pour réduire les interventions manuelles, fiabiliser les releases et accélérer la livraison.",
+      "Je fiabilise vos workflows de build, test et déploiement afin de réduire les étapes manuelles et rendre les releases plus prévisibles.",
     bullets: [
-      "GitHub Actions, GitLab CI et workflows de déploiement",
-      "Docker, automatisation et qualité des releases",
-      "Réduction des frictions pour les équipes techniques",
+      "Workflows GitHub Actions et GitLab CI",
+      "Déploiements Docker industrialisés et contrôlés",
+      "Gestion des releases, erreurs et stratégies de rollback",
     ],
     cta: "Optimiser vos pipelines →",
   },
@@ -28,14 +28,35 @@ const services = [
     category: "// PLATFORM",
     title: "Kubernetes & Platform Engineering",
     description:
-      "Posez des bases plus propres pour vos applications conteneurisées : déploiements standardisés, observabilité, GitOps et patterns réutilisables.",
+      "Je vous aide à standardiser vos déploiements conteneurisés et à poser des fondations Platform Engineering adaptées à la maturité de vos équipes.",
     bullets: [
-      "Kubernetes, Helm et GitOps",
-      "Standards de déploiement applicatif",
-      "Observabilité et fiabilité opérationnelle",
+      "Standards Kubernetes, Helm et GitOps",
+      "Observabilité et diagnostic opérationnel",
+      "Patterns réutilisables et documentation d’équipe",
     ],
     cta: "Structurer votre plateforme →",
   },
+];
+
+const trainingBullets = [
+  "Ateliers pratiques et vulgarisation technique",
+  "Support à la montée en compétence des équipes",
+  "Documentation claire et transfert opérationnel",
+];
+
+const problemItems = [
+  "Infrastructure créée manuellement ou difficile à reproduire",
+  "Pipelines CI/CD fragiles ou trop manuels",
+  "Déploiements Docker / Kubernetes peu standardisés",
+  "Manque de documentation ou de visibilité opérationnelle",
+  "Besoin de structurer une base Cloud / DevOps avant de scaler",
+];
+
+const interventionFormats = [
+  { label: "Audit court", detail: "3 à 5 jours" },
+  { label: "Renfort projet", detail: "quelques semaines" },
+  { label: "Mission longue", detail: "Cloud / DevOps / Platform" },
+  { label: "Formation équipe", detail: "ateliers, support et documentation" },
 ];
 ---
 
@@ -90,5 +111,87 @@ const services = [
         ))
       }
     </div>
+
+    <article
+      class="surface-card mt-6 grid gap-9 p-7 sm:p-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(26rem,1.1fr)] lg:items-center lg:gap-12 lg:p-10"
+      aria-labelledby="training-title"
+    >
+      <div>
+        <p class="eyebrow">// FORMATION & ENABLEMENT</p>
+        <h3 id="training-title" class="mt-6 text-3xl font-semibold tracking-[-0.035em] text-balance text-ink">
+          Formation & Transfert de compétences
+        </h3>
+        <p class="mt-5 leading-7 text-muted">
+          J’accompagne vos équipes sur les fondamentaux Cloud, DevOps, CI/CD, Terraform, Docker ou
+          Kubernetes, avec une approche pédagogique orientée terrain.
+        </p>
+        <a
+          class="mt-7 inline-flex w-fit items-center border-b border-accent/30 pb-1 font-semibold text-accent no-underline transition-colors hover:border-ink hover:text-ink"
+          href="#contact"
+        >
+          Parler formation →
+        </a>
+      </div>
+
+      <ul class="grid gap-3" role="list">
+        {
+          trainingBullets.map((bullet) => (
+            <li class="flex items-start gap-3 rounded-xl border border-line bg-canvas/35 px-4 py-4 text-sm leading-6 text-muted sm:px-5">
+              <span
+                class="mt-1 flex size-4 shrink-0 items-center justify-center rounded-full border border-line-strong bg-accent/10 text-[0.625rem] font-bold text-accent"
+                aria-hidden="true"
+              >
+                ✓
+              </span>
+              <span>{bullet}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </article>
+
+    <div class="mt-6 grid gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
+      <article class="rounded-[var(--radius-card)] border border-line bg-surface/60 p-7 sm:p-8">
+        <p class="eyebrow">// VOS ENJEUX</p>
+        <h3 class="mt-5 text-2xl font-semibold tracking-[-0.03em] text-ink">
+          Les situations où j’interviens
+        </h3>
+        <ul class="mt-7 grid gap-4 sm:grid-cols-2" role="list">
+          {
+            problemItems.map((problem) => (
+              <li class="flex items-start gap-3 text-sm leading-6 text-muted">
+                <span class="mt-2 size-1.5 shrink-0 rounded-full bg-accent" aria-hidden="true" />
+                <span>{problem}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </article>
+
+      <article class="rounded-[var(--radius-card)] border border-line bg-surface/60 p-7 sm:p-8">
+        <p class="eyebrow">// COLLABORATION</p>
+        <h3 class="mt-5 text-2xl font-semibold tracking-[-0.03em] text-ink">
+          Formats d’intervention
+        </h3>
+        <dl class="mt-7 divide-y divide-line">
+          {
+            interventionFormats.map((format) => (
+              <div class="grid gap-1 py-4 first:pt-0 last:pb-0 sm:grid-cols-[auto_1fr] sm:gap-3">
+                <dt class="font-semibold text-ink">{format.label}</dt>
+                <dd class="text-sm leading-6 text-muted sm:text-right">{format.detail}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </article>
+    </div>
+
+    <p class="mt-6 flex items-start gap-3 rounded-2xl border border-line bg-accent/[0.035] px-5 py-4 text-sm leading-7 text-muted sm:px-6">
+      <span class="mt-2.5 size-1.5 shrink-0 rounded-full bg-accent" aria-hidden="true"></span>
+      <span>
+        Je peux aussi accompagner les équipes qui veulent préparer des fondations cloud fiables
+        pour des projets applicatifs, data ou IA.
+      </span>
+    </p>
   </div>
 </section>

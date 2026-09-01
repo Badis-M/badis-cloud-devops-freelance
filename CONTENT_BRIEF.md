@@ -140,21 +140,21 @@ Cloud & Infrastructure Automation
 ### Description
 
 ```text
-Structurez et automatisez vos environnements cloud avec une approche reproductible, maintenable et adaptée à vos contraintes opérationnelles.
+J’interviens sur l’audit, la structuration et l’automatisation de votre infrastructure pour obtenir une base IaC reproductible, maintenable et exploitable par vos équipes.
 ```
 
 ### Bullets
 
 ```text
-Infrastructure as Code avec Terraform
+Audit et structuration Infrastructure as Code
 ```
 
 ```text
-Environnements AWS, Azure ou OCI
+Standards Terraform pour AWS, Azure ou OCI
 ```
 
 ```text
-Documentation et standards d’exploitation
+Documentation d’exploitation et environnements reproductibles
 ```
 
 ### CTA
@@ -180,21 +180,21 @@ CI/CD & Industrialisation
 ### Description
 
 ```text
-Améliorez vos pipelines de build, test et déploiement pour réduire les interventions manuelles, fiabiliser les releases et accélérer la livraison.
+Je fiabilise vos workflows de build, test et déploiement afin de réduire les étapes manuelles et rendre les releases plus prévisibles.
 ```
 
 ### Bullets
 
 ```text
-GitHub Actions, GitLab CI et workflows de déploiement
+Workflows GitHub Actions et GitLab CI
 ```
 
 ```text
-Docker, automatisation et qualité des releases
+Déploiements Docker industrialisés et contrôlés
 ```
 
 ```text
-Réduction des frictions pour les équipes techniques
+Gestion des releases, erreurs et stratégies de rollback
 ```
 
 ### CTA
@@ -220,27 +220,125 @@ Kubernetes & Platform Engineering
 ### Description
 
 ```text
-Posez des bases plus propres pour vos applications conteneurisées : déploiements standardisés, observabilité, GitOps et patterns réutilisables.
+Je vous aide à standardiser vos déploiements conteneurisés et à poser des fondations Platform Engineering adaptées à la maturité de vos équipes.
 ```
 
 ### Bullets
 
 ```text
-Kubernetes, Helm et GitOps
+Standards Kubernetes, Helm et GitOps
 ```
 
 ```text
-Standards de déploiement applicatif
+Observabilité et diagnostic opérationnel
 ```
 
 ```text
-Observabilité et fiabilité opérationnelle
+Patterns réutilisables et documentation d’équipe
 ```
 
 ### CTA
 
 ```text
 Structurer votre plateforme →
+```
+
+## Training & Enablement Block
+
+Display this as a dedicated sub-block after the three main service cards, not as a full-time training-company offer.
+
+### Category
+
+```text
+// FORMATION & ENABLEMENT
+```
+
+### Title
+
+```text
+Formation & Transfert de compétences
+```
+
+### Description
+
+```text
+J’accompagne vos équipes sur les fondamentaux Cloud, DevOps, CI/CD, Terraform, Docker ou Kubernetes, avec une approche pédagogique orientée terrain.
+```
+
+### Bullets
+
+```text
+Ateliers pratiques et vulgarisation technique
+```
+
+```text
+Support à la montée en compétence des équipes
+```
+
+```text
+Documentation claire et transfert opérationnel
+```
+
+### CTA
+
+```text
+Parler formation →
+```
+
+## Problems I Solve Block
+
+### Heading
+
+```text
+Les situations où j’interviens
+```
+
+### Items
+
+```text
+Infrastructure créée manuellement ou difficile à reproduire
+```
+
+```text
+Pipelines CI/CD fragiles ou trop manuels
+```
+
+```text
+Déploiements Docker / Kubernetes peu standardisés
+```
+
+```text
+Manque de documentation ou de visibilité opérationnelle
+```
+
+```text
+Besoin de structurer une base Cloud / DevOps avant de scaler
+```
+
+## Intervention Formats Block
+
+```text
+Audit court — 3 à 5 jours
+```
+
+```text
+Renfort projet — quelques semaines
+```
+
+```text
+Mission longue — Cloud / DevOps / Platform
+```
+
+```text
+Formation équipe — ateliers, support et documentation
+```
+
+## Cautious AI Positioning
+
+Keep Cloud, DevOps and Platform Engineering as the primary positioning. Mention AI only through infrastructure foundations.
+
+```text
+Je peux aussi accompagner les équipes qui veulent préparer des fondations cloud fiables pour des projets applicatifs, data ou IA.
 ```
 
 ## Optional Service Card 4
@@ -603,6 +701,10 @@ CI/CD & Industrialisation
 
 ```text
 Kubernetes & Platform Engineering
+```
+
+```text
+Formation & Transfert de compétences
 ```
 
 ```text
