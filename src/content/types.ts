@@ -109,6 +109,9 @@ export interface SiteContent {
     submitLabel: string;
     submittingLabel: string;
     helperText: string;
+    privacyNotice: string;
+    privacyLinkLabel: string;
+    privacyHref: string;
     errorMessage: string;
     asideAriaLabel: string;
     availabilityTitle: string;
@@ -130,6 +133,34 @@ export interface SiteContent {
     contact: string;
     linksTitle: string;
     portfolio: string;
+    privacy: string;
+    privacyHref: string;
     copyright: string;
+  };
+  privacy: {
+    metadata: SiteMetadata;
+    label: string;
+    title: string;
+    introduction: string;
+    updatedLabel: string;
+    updatedDate: string;
+    homeHref: string;
+    homeLabel: string;
+    languageSwitch: {
+      code: string;
+      label: string;
+      href: string;
+      targetLang: SiteLanguage;
+    };
+    sections: readonly {
+      title: string;
+      paragraphs: readonly string[];
+      items?: readonly string[];
+      link?: {
+        label: string;
+        href: string;
+        external?: boolean;
+      };
+    }[];
   };
 }

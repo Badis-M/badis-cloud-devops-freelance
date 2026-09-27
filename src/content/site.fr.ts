@@ -203,6 +203,10 @@ export const siteFr = {
     submitLabel: "Envoyer une demande",
     submittingLabel: "Envoi en cours...",
     helperText: "Votre message sera transmis par email. Je vous répondrai dès que possible.",
+    privacyNotice:
+      "Les informations envoyées sont utilisées uniquement pour répondre à votre demande et sont transmises via Formspree.",
+    privacyLinkLabel: "En savoir plus sur le traitement de vos données.",
+    privacyHref: "/confidentialite/",
     errorMessage:
       "L’envoi a échoué. Vous pouvez réessayer ou me contacter via LinkedIn.",
     asideAriaLabel: "Disponibilité et délais indicatifs",
@@ -236,6 +240,109 @@ export const siteFr = {
     contact: "Contact",
     linksTitle: "Liens",
     portfolio: "Portfolio",
+    privacy: "Confidentialité",
+    privacyHref: "/confidentialite/",
     copyright: "© 2026 Badis Merakchi — Tous droits réservés.",
+  },
+  privacy: {
+    metadata: {
+      title: "Politique de confidentialité | Badis Merakchi",
+      description:
+        "Politique de confidentialité du site de consulting de Badis Merakchi et informations sur le traitement des demandes de contact.",
+      openGraphTitle: "Politique de confidentialité | Badis Merakchi",
+      openGraphDescription:
+        "Informations sur les données traitées lors d’une demande de contact sur le site de consulting de Badis Merakchi.",
+      openGraphLocale: "fr_FR",
+      openGraphAlternateLocale: "en_GB",
+      canonicalUrl: "https://consulting.badismerakchi.com/confidentialite/",
+    },
+    label: "// CONFIDENTIALITÉ",
+    title: "Politique de confidentialité",
+    introduction:
+      "Cette page explique quelles données sont traitées lorsque vous utilisez le formulaire de contact, pourquoi elles le sont et comment exercer vos droits.",
+    updatedLabel: "Dernière mise à jour",
+    updatedDate: "26 septembre 2026",
+    homeHref: "/",
+    homeLabel: "Retour au site",
+    languageSwitch: {
+      code: "EN",
+      label: "View the privacy policy in English",
+      href: "/en/privacy/",
+      targetLang: "en",
+    },
+    sections: [
+      {
+        title: "Responsable du traitement",
+        paragraphs: [
+          "Badis Merakchi, consultant Cloud & DevOps indépendant basé près de Genève, est responsable du traitement des données envoyées depuis ce site.",
+          "Pour toute question relative à vos données, vous pouvez utiliser le formulaire de contact en précisant que votre demande concerne la protection des données.",
+        ],
+        link: { label: "Accéder au formulaire de contact →", href: "/#contact" },
+      },
+      {
+        title: "Données collectées",
+        paragraphs: [
+          "Le formulaire peut recueillir les informations que vous choisissez de transmettre pour présenter votre besoin.",
+        ],
+        items: [
+          "Prénom et nom",
+          "Entreprise ou organisation",
+          "Adresse email professionnelle",
+          "Service souhaité et budget estimé",
+          "Contenu du message",
+        ],
+      },
+      {
+        title: "Finalités et base du traitement",
+        paragraphs: [
+          "Ces données sont utilisées uniquement pour recevoir votre demande, comprendre votre contexte, vous répondre et préparer un éventuel échange ou une proposition commerciale.",
+          "Le traitement repose sur les démarches précontractuelles entreprises à votre demande et, lorsque cela est pertinent, sur l’intérêt légitime à gérer les échanges professionnels. Les informations ne sont pas ajoutées à une liste marketing sans votre accord.",
+        ],
+      },
+      {
+        title: "Destinataires et services techniques",
+        paragraphs: [
+          "Les informations sont destinées à Badis Merakchi et aux prestataires strictement nécessaires au fonctionnement du site. Formspree traite les soumissions du formulaire et les transmet par email. Cloudflare héberge et protège le site et peut traiter des données techniques nécessaires à la livraison et à la sécurité du service.",
+        ],
+        link: {
+          label: "Consulter la politique de confidentialité de Formspree →",
+          href: "https://formspree.io/legal/privacy-policy/",
+          external: true,
+        },
+      },
+      {
+        title: "Transferts internationaux",
+        paragraphs: [
+          "Formspree indique utiliser une infrastructure située aux États-Unis et pouvoir traiter des informations dans d’autres pays où le service opère. Sa politique de confidentialité décrit les mesures appliquées à ces transferts.",
+        ],
+      },
+      {
+        title: "Durée de conservation",
+        paragraphs: [
+          "Les demandes qui ne donnent pas lieu à une relation contractuelle sont conservées pendant un maximum de 12 mois après le dernier échange, puis supprimées des espaces sous le contrôle de Badis Merakchi.",
+          "Lorsqu’une relation contractuelle est engagée, certaines informations peuvent être conservées plus longtemps lorsqu’elles sont nécessaires à l’exécution de la mission ou au respect d’obligations légales, administratives ou comptables. Les prestataires techniques peuvent appliquer leurs propres délais de conservation et de sauvegarde.",
+        ],
+      },
+      {
+        title: "Vos droits",
+        paragraphs: [
+          "Selon la réglementation applicable, vous pouvez demander l’accès, la rectification ou l’effacement de vos données, ainsi que la limitation du traitement ou vous opposer à celui-ci.",
+          "Vous pouvez exercer ces droits via le formulaire de contact. Vous pouvez également saisir l’autorité de protection des données compétente si vous estimez que votre demande n’a pas été traitée de manière appropriée.",
+        ],
+        link: { label: "Exercer vos droits →", href: "/#contact" },
+      },
+      {
+        title: "Cookies et mesure d’audience",
+        paragraphs: [
+          "Ce site n’intègre actuellement aucun outil d’analytics, de publicité ou de suivi marketing et ne dépose volontairement aucun cookie à ces fins.",
+        ],
+      },
+      {
+        title: "Évolution de cette politique",
+        paragraphs: [
+          "Cette politique peut être mise à jour si le formulaire, les prestataires utilisés ou les obligations applicables évoluent. La date de dernière mise à jour est indiquée en haut de la page.",
+        ],
+      },
+    ],
   },
 } satisfies SiteContent;

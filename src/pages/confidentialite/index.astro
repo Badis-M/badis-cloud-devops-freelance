@@ -1,0 +1,15 @@
+---
+import PrivacyPage from "../../components/PrivacyPage.astro";
+import { siteFr } from "../../content/site.fr";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  {...siteFr.privacy.metadata}
+  lang={siteFr.lang}
+  skipLinkLabel={siteFr.skipLinkLabel}
+  alternateFrenchUrl="https://consulting.badismerakchi.com/confidentialite/"
+  alternateEnglishUrl="https://consulting.badismerakchi.com/en/privacy/"
+>
+  <PrivacyPage content={siteFr.privacy} />
+</BaseLayout>

@@ -97,9 +97,19 @@ The rendered one-page structure must remain:
 - SEO should remain focused on Cloud, DevOps, freelance consulting, Geneva and Switzerland.
 - Existing metadata and favicon configuration should not change unless explicitly requested.
 
+## Privacy Information
+
+- A French privacy policy is available at `/confidentialite/`.
+- An English privacy policy is available at `/en/privacy/`.
+- The contact form displays a short privacy notice and links to the policy in the active language.
+- The footer links to the matching privacy policy.
+- The policy documents Formspree and Cloudflare as technical service providers without changing the existing Formspree endpoint or submission behavior.
+- Enquiries that do not result in a contractual relationship use a stated retention period of up to 12 months after the last exchange. This operational commitment must be reviewed if actual retention practices change.
+
 ## Current Known Improvement Backlog
 
 - Continue improving the commercial positioning.
+- If a compact experience proof is added, prefer a broad and accurate formulation such as `Plus de 8 ans d’expérience dans l’IT`; do not foreground `4 ans chez Oracle` unless explicitly requested.
 - Keep services concrete, mission-oriented and focused on client outcomes.
 - Continue highlighting training and team enablement.
 - Mention AI carefully without claiming AI, MLOps or machine-learning expertise.

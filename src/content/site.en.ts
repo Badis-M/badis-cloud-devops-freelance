@@ -203,6 +203,10 @@ export const siteEn = {
     submitLabel: "Send your request",
     submittingLabel: "Sending...",
     helperText: "Your message will be sent by email. I’ll respond as soon as possible.",
+    privacyNotice:
+      "The information submitted is used solely to respond to your enquiry and is transmitted through Formspree.",
+    privacyLinkLabel: "Learn more about how your data is handled.",
+    privacyHref: "/en/privacy/",
     errorMessage:
       "Your message could not be sent. Please try again or contact me via LinkedIn.",
     asideAriaLabel: "Availability and indicative timelines",
@@ -236,6 +240,109 @@ export const siteEn = {
     contact: "Contact",
     linksTitle: "Links",
     portfolio: "Portfolio",
+    privacy: "Privacy",
+    privacyHref: "/en/privacy/",
     copyright: "© 2026 Badis Merakchi — All rights reserved.",
+  },
+  privacy: {
+    metadata: {
+      title: "Privacy Policy | Badis Merakchi",
+      description:
+        "Privacy policy for Badis Merakchi’s consulting website and information about how contact enquiries are handled.",
+      openGraphTitle: "Privacy Policy | Badis Merakchi",
+      openGraphDescription:
+        "Information about the data processed when submitting an enquiry through Badis Merakchi’s consulting website.",
+      openGraphLocale: "en_GB",
+      openGraphAlternateLocale: "fr_FR",
+      canonicalUrl: "https://consulting.badismerakchi.com/en/privacy/",
+    },
+    label: "// PRIVACY",
+    title: "Privacy Policy",
+    introduction:
+      "This page explains which data is processed when you use the contact form, why it is processed and how you can exercise your rights.",
+    updatedLabel: "Last updated",
+    updatedDate: "26 September 2026",
+    homeHref: "/en/",
+    homeLabel: "Back to the website",
+    languageSwitch: {
+      code: "FR",
+      label: "Consulter la politique de confidentialité en français",
+      href: "/confidentialite/",
+      targetLang: "fr",
+    },
+    sections: [
+      {
+        title: "Data controller",
+        paragraphs: [
+          "Badis Merakchi, an independent Cloud & DevOps consultant based near Geneva, is responsible for processing data submitted through this website.",
+          "For any question about your data, you can use the contact form and state that your request concerns data protection.",
+        ],
+        link: { label: "Go to the contact form →", href: "/en/#contact" },
+      },
+      {
+        title: "Data collected",
+        paragraphs: [
+          "The form may collect the information you choose to provide when describing your requirements.",
+        ],
+        items: [
+          "First and last name",
+          "Company or organisation",
+          "Work email address",
+          "Required service and estimated budget",
+          "Message content",
+        ],
+      },
+      {
+        title: "Purposes and legal basis",
+        paragraphs: [
+          "This data is used solely to receive your enquiry, understand your context, respond to you and prepare a potential discussion or commercial proposal.",
+          "Processing is based on pre-contractual steps taken at your request and, where relevant, on the legitimate interest in managing professional enquiries. Your details are not added to a marketing list without your consent.",
+        ],
+      },
+      {
+        title: "Recipients and technical services",
+        paragraphs: [
+          "The information is intended for Badis Merakchi and the service providers strictly required to operate the website. Formspree processes form submissions and sends them by email. Cloudflare hosts and protects the website and may process technical data required to deliver and secure the service.",
+        ],
+        link: {
+          label: "Read Formspree’s privacy policy →",
+          href: "https://formspree.io/legal/privacy-policy/",
+          external: true,
+        },
+      },
+      {
+        title: "International transfers",
+        paragraphs: [
+          "Formspree states that it uses infrastructure located in the United States and may process information in other countries where it operates. Its privacy policy describes the measures applied to these transfers.",
+        ],
+      },
+      {
+        title: "Retention period",
+        paragraphs: [
+          "Enquiries that do not result in a contractual relationship are retained for no longer than 12 months after the last exchange and are then deleted from systems controlled by Badis Merakchi.",
+          "Where a contractual relationship is established, some information may be retained for longer when required to perform the engagement or comply with legal, administrative or accounting obligations. Technical service providers may apply their own retention and backup periods.",
+        ],
+      },
+      {
+        title: "Your rights",
+        paragraphs: [
+          "Depending on the applicable regulations, you may request access to, correction or deletion of your data, restrict its processing or object to its use.",
+          "You can exercise these rights through the contact form. You may also contact the relevant data protection authority if you believe your request has not been handled appropriately.",
+        ],
+        link: { label: "Exercise your rights →", href: "/en/#contact" },
+      },
+      {
+        title: "Cookies and audience measurement",
+        paragraphs: [
+          "This website currently uses no analytics, advertising or marketing tracking tools and does not intentionally place cookies for these purposes.",
+        ],
+      },
+      {
+        title: "Changes to this policy",
+        paragraphs: [
+          "This policy may be updated if the form, service providers or applicable obligations change. The latest revision date is shown at the top of this page.",
+        ],
+      },
+    ],
   },
 } satisfies SiteContent;
