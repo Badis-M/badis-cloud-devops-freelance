@@ -1,5 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
+import {
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type MouseEvent as ReactMouseEvent,
+  type ReactNode,
+} from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -107,6 +114,7 @@ const services = [
 // Steps are only faded (opacity), never removed, so screen readers always get the full text.
 type TimelineMode = "static" | "pinned" | "steps";
 const PIN_STEP_VH = 45; // scroll distance (in vh) per revealed step while pinned
+const METHOD_SEQUENCE_EVENT = "badis:method-sequence";
 
 function MethodTimeline({
   children,
@@ -121,6 +129,8 @@ function MethodTimeline({
   const [mode, setMode] = useState<TimelineMode>("static");
   const [revealed, setRevealed] = useState(steps.length);
   const [line, setLine] = useState<number | null>(null);
+  const [directSequence, setDirectSequence] = useState(false);
+  const sequenceTimers = useRef<ReturnType<typeof setTimeout>[]>([]);
 
   // Pick a mode from viewport size and motion preference.
   useEffect(() => {
@@ -145,8 +155,52 @@ function MethodTimeline({
     };
   }, []);
 
+  // Navigation starts a deliberate one-second sequence instead of relying on scroll progress.
+  useEffect(() => {
+    const clearSequence = () => {
+      sequenceTimers.current.forEach(clearTimeout);
+      sequenceTimers.current = [];
+    };
+    const updateLine = (count: number) => {
+      requestAnimationFrame(() => {
+        const items = Array.from(listRef.current?.children ?? []).filter(
+          (child) => child.tagName === "LI",
+        ) as HTMLElement[];
+        const last = items[count - 1];
+        const horizontal = window.matchMedia("(min-width: 768px)").matches;
+        setLine(last ? (horizontal ? last.offsetLeft : last.offsetTop) + 18 : 0);
+      });
+    };
+    const show = (count: number) => {
+      setRevealed(count);
+      updateLine(count);
+    };
+    const playSequence = () => {
+      clearSequence();
+      setDirectSequence(true);
+
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        setRevealed(steps.length);
+        setLine(null);
+        return;
+      }
+
+      show(1);
+      for (let count = 2; count <= steps.length; count += 1) {
+        sequenceTimers.current.push(setTimeout(() => show(count), (count - 1) * 1000));
+      }
+    };
+
+    window.addEventListener(METHOD_SEQUENCE_EVENT, playSequence);
+    return () => {
+      window.removeEventListener(METHOD_SEQUENCE_EVENT, playSequence);
+      clearSequence();
+    };
+  }, []);
+
   // Map scroll position to the number of revealed steps (reverses naturally on scroll up).
   useEffect(() => {
+    if (directSequence) return;
     if (mode === "static") {
       setRevealed(steps.length);
       setLine(null);
@@ -183,9 +237,9 @@ function MethodTimeline({
       window.removeEventListener("resize", onScroll);
       if (frame) cancelAnimationFrame(frame);
     };
-  }, [mode]);
+  }, [directSequence, mode]);
 
-  const pinned = mode === "pinned";
+  const pinned = mode === "pinned" && !directSequence;
   const active = mode === "static" ? -1 : revealed - 1;
 
   return (
@@ -296,6 +350,20 @@ function Index() {
   const scrollAnchor = useRef<{ element: Element; top: number } | null>(null);
   const timelineAnchor = useRef<{ element: HTMLElement; progress: number } | null>(null);
   const t = (text: string) => (language === "en" ? (english[text] ?? text) : text);
+
+  const showMethod = (event: ReactMouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    const section = document.getElementById("methode");
+    if (!section) return;
+
+    const root = document.documentElement;
+    const previousScrollBehavior = root.style.scrollBehavior;
+    root.style.scrollBehavior = "auto";
+    section.scrollIntoView({ block: "start" });
+    root.style.scrollBehavior = previousScrollBehavior;
+    window.history.replaceState(null, "", "#methode");
+    requestAnimationFrame(() => window.dispatchEvent(new Event(METHOD_SEQUENCE_EVENT)));
+  };
 
   const capturePosition = () => {
     const track = document.querySelector<HTMLElement>('[data-mode="pinned"]');
@@ -415,7 +483,12 @@ function Index() {
             <a href="#prestations" className="hidden md:inline hover:text-foreground">
               {t("Prestations")}
             </a>
-            <a href="#methode" className="hidden md:inline hover:text-foreground">
+            <a
+              href="#methode"
+              aria-controls="methode"
+              onClick={showMethod}
+              className="hidden md:inline hover:text-foreground"
+            >
               {t("Méthode")}
             </a>
             <a href="#profil" className="hidden md:inline hover:text-foreground">
@@ -432,10 +505,18 @@ function Index() {
       {/* Home */}
       <section className="bg-background text-foreground">
         <div className="mx-auto max-w-6xl px-6 pb-20 pt-12 md:px-10 md:pb-28 md:pt-20">
-          <p className="eyebrow reveal flex items-center gap-3 text-muted-foreground">
-            <span className="inline-block h-2 w-2 rounded-full bg-signal" />
-            {t("Consultant Cloud & DevOps · France, Suisse romande, remote")}
-          </p>
+          <div className="reveal flex flex-wrap items-center gap-x-4 gap-y-3">
+            <a
+              href="#contact"
+              className="inline-flex min-h-8 items-center gap-2 rounded-full border border-emerald-700/15 bg-emerald-100/60 px-3 py-1 font-mono text-[0.64rem] font-semibold uppercase tracking-[0.12em] text-emerald-800 transition-colors hover:bg-emerald-100 focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-emerald-700"
+            >
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-600" aria-hidden="true" />
+              {t("Disponible")}
+            </a>
+            <p className="eyebrow text-muted-foreground">
+              {t("Consultant Cloud & DevOps · France, Suisse romande, remote")}
+            </p>
+          </div>
           <h1 className="reveal mt-8 max-w-5xl font-display text-[2.6rem] font-light leading-[1.02] tracking-tight md:text-[5.5rem]">
             {t("Des infrastructures que vos équipes ")}
             <em className="text-signal">{t("comprennent")}</em>

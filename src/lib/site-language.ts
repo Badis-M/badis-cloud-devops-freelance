@@ -22,6 +22,7 @@ export const english: Record<string, string> = {
   Méthode: "Approach",
   Profil: "About",
   Contact: "Contact",
+  Disponible: "Available",
   "Discutons de votre besoin": "Let’s discuss your needs",
   "Consultant Cloud & DevOps · France, Suisse romande, remote":
     "Cloud & DevOps consultant · France, French-speaking Switzerland, remote",
