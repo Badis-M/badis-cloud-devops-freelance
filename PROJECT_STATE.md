@@ -5,130 +5,76 @@ This file is the current source of truth for future Codex tasks in this reposito
 Documentation priority:
 
 1. The current user task overrides all repository documentation.
-2. `PROJECT_STATE.md` overrides older context files when they conflict.
-3. Older context files remain useful for background information when they do not conflict with this file.
+2. `PROJECT_STATE.md` overrides older briefs when they conflict.
+3. Older context files remain historical references for the former Astro version.
 
 ## Project Summary
 
-- Standalone freelance consulting landing page for Badis Merakchi.
+- Freelance consulting landing page for Badis Merakchi.
 - Primary positioning: Cloud, DevOps and Platform Engineering consulting.
-- Primary goal: generate qualified commercial leads for freelance consulting missions.
-- The site is commercial and service-oriented, not a CV or job-search page.
-- The implementation remains a static Astro, TypeScript and Tailwind CSS website.
-- The site is available in French and English through static routes.
+- Primary goal: generate qualified commercial leads.
+- The current implementation was created with Lovable and replaces the former Astro site.
 
-## Live Deployment
+## Version History
+
+- Git tag `1.0` points to commit `e5eae64`, the last version of the former Astro site.
+- The current working tree contains the new Lovable implementation and has not been committed or pushed yet.
+
+## Current Stack
+
+- TanStack Start
+- React 19
+- TypeScript
+- Vite
+- Tailwind CSS 4
+- Nitro Cloudflare module preset
+- Cloudflare Workers deployment
+
+## Language Behavior
+
+- French and English content share the `/` route.
+- The language switch updates the content in place.
+- The selected language is persisted in browser storage.
+- There is no browser-language redirect.
+
+## Contact Behavior
+
+- The current Lovable implementation uses an email link.
+- The former Formspree form and its privacy-policy routes are not part of the new implementation.
+- Do not reintroduce Formspree or a custom backend unless explicitly requested.
+
+## Deployment
 
 - Live URL: `https://consulting.badismerakchi.com/`
-- Hosting: Cloudflare Workers Static Assets / Cloudflare deployment.
-- Source code: GitHub repository.
 - Production branch: `main`.
-- Deployments happen after a Git push when the Cloudflare Git integration is active.
+- The root `wrangler.jsonc` preserves the existing Worker name: `badis-cloud-devops-freelance`.
+- `npm run build` generates the Cloudflare worker and assets in `.output`.
+- Nitro generates `.wrangler/deploy/config.json`, which redirects Wrangler to `.output/server/wrangler.json`.
+- The expected deploy command remains `npx wrangler deploy` after the build.
 
-## Current Page Structure
+## Validation Commands
 
-The rendered one-page structure must remain:
+```bash
+npm ci
+npm run lint
+npm test
+npm run build
+npx --yes wrangler@4.141.0 deploy --dry-run
+```
 
-1. Navigation
-2. Hero
-3. Services
-4. Qui suis-je
-5. Méthode
-6. Contact
-7. Footer
+## Current Validation State
 
-## Language and Routing
+- Production build passes.
+- All four automated tests pass.
+- ESLint passes with six non-blocking React Fast Refresh warnings from reusable UI modules.
+- Wrangler dry-run passes and targets the existing `badis-cloud-devops-freelance` Worker.
+- The local development server returns HTTP 200 on `/`.
 
-- French remains the primary language at `/`.
-- English is available at `/en/`.
-- The navigation includes a discreet language switch between both routes.
-- No browser-language redirect is used.
-- Shared page copy is maintained in `src/content/site.fr.ts` and `src/content/site.en.ts`.
-- Both routes use the same Astro components and keep the same section order.
-
-## Removed or Deprecated Sections
-
-- Proof / Technologies is no longer rendered.
-- WhyWorkWithMe is no longer rendered.
-- Do not reintroduce either section unless the user explicitly requests it.
-- Their component files may remain in the repository while they are unused.
-
-## Approved Design Direction
-
-- Centered, compact hero.
-- One continuous dark background across the page.
-- Deep navy as the dominant color.
-- Violet as a secondary accent.
-- Rose should remain almost imperceptible.
-- Minimal, premium, independent-consultant aesthetic.
-- Inspired by FyberHub in spirit and rhythm, without pixel-perfect copying or reused assets.
-- Keep the design calm, readable, responsive and lightweight.
-
-## Current Functional State
-
-- The contact form is enabled through Formspree.
-- Current Formspree endpoint: `https://formspree.io/f/xyeykrvl`.
-- Do not change the Formspree endpoint unless the user explicitly requests it.
-- The form submits through AJAX using `fetch` and `FormData`.
-- Successful submissions do not redirect away from the page.
-- A success popup appears after Formspree confirms a successful submission.
-- An inline error message appears when submission fails.
-- Loading and focus-management behavior are implemented.
-- There is no custom backend.
-- There is no analytics integration.
-- There are no unnecessary runtime dependencies.
-
-## Security Headers
-
-- Cloudflare Workers Static Assets security headers are defined in `public/_headers` for all routes.
-- HSTS starts conservatively at `max-age=86400`, without `includeSubDomains` or `preload`.
-- The Content Security Policy allows the current inline Astro script and styles while the site is tested.
-- CSP `connect-src` and `form-action` explicitly allow `https://formspree.io` so the AJAX contact form and HTML fallback remain functional.
-- Framing, MIME sniffing, referrer leakage and unnecessary browser permissions are restricted.
-- Do not tighten HSTS or remove the inline CSP allowances until the deployed French and English routes and contact form have been verified.
-
-## Current Metadata
-
-- Browser title: `Consultant Cloud | Badis Merakchi`.
-- English browser title: `Cloud Consultant | Badis Merakchi`.
-- Favicon: `/favicon.png?v=2`.
-- Primary language: French (`fr`), with an English (`en`) version at `/en/`.
-- Canonical and alternate-language links are configured for both routes.
-- SEO should remain focused on Cloud, DevOps, freelance consulting, Geneva and Switzerland.
-- Existing metadata and favicon configuration should not change unless explicitly requested.
-
-## Privacy Information
-
-- A French privacy policy is available at `/confidentialite/`.
-- An English privacy policy is available at `/en/privacy/`.
-- The contact form displays a short privacy notice and links to the policy in the active language.
-- The footer links to the matching privacy policy.
-- The policy documents Formspree and Cloudflare as technical service providers without changing the existing Formspree endpoint or submission behavior.
-- Enquiries that do not result in a contractual relationship use a stated retention period of up to 12 months after the last exchange. This operational commitment must be reviewed if actual retention practices change.
-
-## Current Known Improvement Backlog
-
-- Continue improving the commercial positioning.
-- If a compact experience proof is added, prefer a broad and accurate formulation such as `Plus de 8 ans d’expérience dans l’IT`; do not foreground `4 ans chez Oracle` unless explicitly requested.
-- Keep services concrete, mission-oriented and focused on client outcomes.
-- Continue highlighting training and team enablement.
-- Mention AI carefully without claiming AI, MLOps or machine-learning expertise.
-- Improve acquisition channels later through LinkedIn, freelance platforms, the Swiss network, ESNs and direct outreach.
-- Continue targeting Swiss permanent employment opportunities in parallel, but never mention that search on the consulting website.
-
-## Working Rules for Future Codex Tasks
+## Working Rules
 
 - Read `AGENTS.md` and `PROJECT_STATE.md` before making changes.
-- The current user task overrides older documentation and this state file.
-- Modify only the files requested by the user.
-- Keep changes small, reviewable and reversible.
-- Do not add dependencies without clear justification.
-- Do not add a backend unless explicitly requested.
-- Do not change the Formspree endpoint unless explicitly requested.
-- Do not reintroduce removed sections unless explicitly requested.
-- Preserve the current page structure unless explicitly requested.
-- Preserve the French `/` and English `/en/` static routes unless explicitly requested.
-- Keep shared copy in the typed language files instead of duplicating component markup.
-- Preserve the approved design direction unless explicitly requested.
-- Keep the build passing.
-- Do not commit secrets, credentials or private local state.
+- Preserve published Git history because the project is connected to Lovable.
+- Keep bilingual copy in the existing browser-safe translation module.
+- Keep changes small and reviewable.
+- Do not add a backend or dependencies without explicit justification.
+- Keep lint, tests and build passing.
