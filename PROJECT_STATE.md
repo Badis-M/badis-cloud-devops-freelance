@@ -43,6 +43,14 @@ Documentation priority:
 - The former Formspree form and its privacy-policy routes are not part of the new implementation.
 - Do not reintroduce Formspree or a custom backend unless explicitly requested.
 
+## Security Headers
+
+- SSR responses receive security headers in `src/server.ts` through `src/lib/security-headers.ts`.
+- HSTS uses `max-age=31536000; includeSubDomains` without preload.
+- CSP allows the inline hydration scripts and styles required by TanStack Start and the Google Fonts origins used by the site.
+- Framing is restricted to the same origin, MIME sniffing is disabled and cross-origin referrer data is limited.
+- Camera, microphone, geolocation, payment, USB and motion sensor browser APIs are disabled.
+
 ## Deployment
 
 - Live URL: `https://consulting.badismerakchi.com/`
