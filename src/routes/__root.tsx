@@ -110,6 +110,12 @@ function RootShell({ children }: { children: ReactNode }) {
       </head>
       <body>
         {children}
+        {/* Cloudflare Web Analytics is shared across every rendered route and language. */}
+        <script
+          type="module"
+          src="https://static.cloudflareinsights.com/beacon.min.js"
+          data-cf-beacon='{"token": "62b94c4750f24c0a9879824cdd3ff3b0"}'
+        ></script>
         <Scripts />
       </body>
     </html>

@@ -15,6 +15,11 @@ describe("security headers", () => {
     for (const [name, value] of Object.entries(SECURITY_HEADERS)) {
       expect(secured.headers.get(name)).toBe(value);
     }
+    const policy = secured.headers.get("content-security-policy") ?? "";
+    expect(policy).toContain(
+      "script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com/beacon.min.js",
+    );
+    expect(policy).toContain("connect-src 'self' https://cloudflareinsights.com");
     await expect(secured.text()).resolves.toBe("ok");
   });
 });

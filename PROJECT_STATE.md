@@ -51,6 +51,12 @@ Documentation priority:
 - Framing is restricted to the same origin, MIME sniffing is disabled and cross-origin referrer data is limited.
 - Camera, microphone, geolocation, payment, USB and motion sensor browser APIs are disabled.
 
+## Analytics
+
+- Cloudflare Web Analytics is loaded once from the shared root shell.
+- The CSP permits only `https://static.cloudflareinsights.com/beacon.min.js` for the analytics script and `https://cloudflareinsights.com` for beacon transmission.
+- No analytics dependency or additional client library is installed.
+
 ## Deployment
 
 - Live URL: `https://consulting.badismerakchi.com/`
