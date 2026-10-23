@@ -18,14 +18,14 @@ Documentation priority:
 ## Version History
 
 - Git tag `1.0` points to commit `e5eae64`, the last version of the former Astro site.
-- The current working tree contains the new Lovable implementation and has not been committed or pushed yet.
+- The Lovable replacement was committed as `1f4640c`. New changes require their own review before commit or deployment.
 
 ## Current Stack
 
 - TanStack Start
 - React 19
 - TypeScript
-- Vite
+- Vite 8.1.6
 - Tailwind CSS 4
 - Nitro Cloudflare module preset
 - Cloudflare Workers deployment
@@ -36,12 +36,30 @@ Documentation priority:
 - The language switch updates the content in place.
 - The selected language is persisted in browser storage.
 - There is no browser-language redirect.
+- Page descriptions, Open Graph and Twitter metadata follow the active language. The homepage keeps one canonical URL because both languages share `/`.
+- French and English privacy pages are available at `/confidentialite` and `/en/privacy`, with separate canonicals and language alternates.
 
 ## Contact Behavior
 
 - The current Lovable implementation uses an email link.
-- The former Formspree form and its privacy-policy routes are not part of the new implementation.
+- The former Formspree form is not part of the new implementation.
 - Do not reintroduce Formspree or a custom backend unless explicitly requested.
+
+## Accessibility and Presentation
+
+- Each page has a main landmark and a keyboard-visible skip link.
+- Small orange labels use a darker shade on light surfaces and a lighter shade on dark surfaces.
+- The Method section scrolls normally and reveals its four steps once with a 180 ms stagger; reduced motion shows the content immediately.
+- Below-the-fold content blocks have a subtle, one-time entrance. Keyboard focus reveals content immediately; reduced motion disables entrances and moving link arrows. Language changes do not replay the effects.
+- Portfolio links are available in navigation and below the Profile copy.
+- The social sharing image is `public/social-card.png` (1200 × 630), rendered from the editable `public/social-card.svg`.
+
+## Privacy Information
+
+- The footer and email contact block link to the privacy page in the active language.
+- Shared French and English privacy content is in `src/lib/privacy-content.ts`.
+- The notice covers email enquiries, Cloudflare hosting and analytics, Google Fonts, browser language storage, service providers and data rights.
+- No fixed email-retention duration or exclusively Swiss processing is asserted. Retention wording and provider information must continue to reflect actual practices.
 
 ## Security Headers
 
@@ -79,7 +97,9 @@ npx --yes wrangler@4.141.0 deploy --dry-run
 ## Current Validation State
 
 - Production build passes.
-- All four automated tests pass.
+- Automated tests cover routing, language preference, metadata updates, security headers and the one-time Method reveal.
+- Vitest is updated to the patched 4.1.12 release.
+- The dependency audit reports no known vulnerabilities after the Vite and Vitest patch updates.
 - ESLint passes with six non-blocking React Fast Refresh warnings from reusable UI modules.
 - Wrangler dry-run passes and targets the existing `badis-cloud-devops-freelance` Worker.
 - The local development server returns HTTP 200 on `/`.

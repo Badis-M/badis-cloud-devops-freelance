@@ -9,6 +9,8 @@ import {
 } from "react";
 
 import { Button } from "@/components/ui/button";
+import { useSectionEntrance } from "@/hooks/use-section-entrance";
+import { CONTACT_EMAIL, PRIVACY_PATHS, getPageHead, syncPageMetadata } from "@/lib/site-metadata";
 import {
   english,
   readLanguage,
@@ -17,27 +19,11 @@ import {
   type Language,
 } from "@/lib/site-language";
 
-const EMAIL = "badis.merakchi@gmail.com";
+const EMAIL = CONTACT_EMAIL;
+const PORTFOLIO_URL = "https://portfolio.badismerakchi.com";
 
 export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "Badis Merakchi — Consultant Cloud & DevOps freelance" },
-      {
-        name: "description",
-        content:
-          "Consultant senior Cloud & DevOps : infrastructure as code, CI/CD, Kubernetes et transfert de compétences. Missions en France, Suisse romande et remote.",
-      },
-      { property: "og:title", content: "Badis Merakchi — Consultant Cloud & DevOps" },
-      {
-        property: "og:description",
-        content:
-          "Fiabiliser, automatiser et transmettre : une intervention structurée, du cadrage à la livraison.",
-      },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
+  head: () => getPageHead("fr"),
   component: Index,
 });
 
@@ -107,15 +93,7 @@ const services = [
   },
 ];
 
-// Method timeline: scroll-driven progressive reveal.
-// - "static": default render (SSR, no JS, reduced motion) — all steps visible, no pinning.
-// - "pinned": desktop, when the section fits the viewport — the section sticks while scroll progress reveals steps.
-// - "steps": mobile / short viewports — each step reveals as it enters the viewport.
-// Steps are only faded (opacity), never removed, so screen readers always get the full text.
-type TimelineMode = "static" | "pinned" | "steps";
-const PIN_STEP_VH = 45; // scroll distance (in vh) per revealed step while pinned
-const METHOD_SEQUENCE_EVENT = "badis:method-sequence";
-
+// Keep all steps readable during SSR and when motion is reduced.
 function MethodTimeline({
   children,
   translate,
@@ -123,181 +101,63 @@ function MethodTimeline({
   children: ReactNode;
   translate: (text: string) => string;
 }) {
-  const trackRef = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLOListElement>(null);
-  const [mode, setMode] = useState<TimelineMode>("static");
-  const [revealed, setRevealed] = useState(steps.length);
-  const [line, setLine] = useState<number | null>(null);
-  const [directSequence, setDirectSequence] = useState(false);
-  const sequenceTimers = useRef<ReturnType<typeof setTimeout>[]>([]);
+  const [reveal, setReveal] = useState<"static" | "waiting" | "visible">("static");
 
-  // Pick a mode from viewport size and motion preference.
   useEffect(() => {
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const desktop = window.matchMedia("(min-width: 768px)");
-    const pick = () => {
-      if (reduce.matches) return setMode("static");
-      if (!desktop.matches) return setMode("steps");
-      const el = contentRef.current;
-      // Pin only when heading + timeline fit on screen (content height without vertical padding + small margin).
-      const inner = el
-        ? el.scrollHeight - parseFloat(getComputedStyle(el).paddingTop) * 2
-        : Infinity;
-      setMode(inner + 96 <= window.innerHeight ? "pinned" : "steps");
+    const list = listRef.current;
+    const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (!list || motion.matches || !("IntersectionObserver" in window)) return;
+
+    setReveal("waiting");
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return;
+        setReveal("visible");
+        observer.disconnect();
+      },
+      { rootMargin: "0px 0px -10% 0px", threshold: 0 },
+    );
+    observer.observe(list);
+
+    const stopMotion = () => {
+      if (!motion.matches) return;
+      observer.disconnect();
+      setReveal("static");
     };
-    pick();
-    window.addEventListener("resize", pick);
-    reduce.addEventListener("change", pick);
+    motion.addEventListener("change", stopMotion);
     return () => {
-      window.removeEventListener("resize", pick);
-      reduce.removeEventListener("change", pick);
+      observer.disconnect();
+      motion.removeEventListener("change", stopMotion);
     };
   }, []);
-
-  // Navigation starts a deliberate one-second sequence instead of relying on scroll progress.
-  useEffect(() => {
-    const clearSequence = () => {
-      sequenceTimers.current.forEach(clearTimeout);
-      sequenceTimers.current = [];
-    };
-    const updateLine = (count: number) => {
-      requestAnimationFrame(() => {
-        const items = Array.from(listRef.current?.children ?? []).filter(
-          (child) => child.tagName === "LI",
-        ) as HTMLElement[];
-        const last = items[count - 1];
-        const horizontal = window.matchMedia("(min-width: 768px)").matches;
-        setLine(last ? (horizontal ? last.offsetLeft : last.offsetTop) + 18 : 0);
-      });
-    };
-    const show = (count: number) => {
-      setRevealed(count);
-      updateLine(count);
-    };
-    const playSequence = () => {
-      clearSequence();
-      setDirectSequence(true);
-
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        setRevealed(steps.length);
-        setLine(null);
-        return;
-      }
-
-      show(1);
-      for (let count = 2; count <= steps.length; count += 1) {
-        sequenceTimers.current.push(setTimeout(() => show(count), (count - 1) * 1000));
-      }
-    };
-
-    window.addEventListener(METHOD_SEQUENCE_EVENT, playSequence);
-    return () => {
-      window.removeEventListener(METHOD_SEQUENCE_EVENT, playSequence);
-      clearSequence();
-    };
-  }, []);
-
-  // Map scroll position to the number of revealed steps (reverses naturally on scroll up).
-  useEffect(() => {
-    if (directSequence) return;
-    if (mode === "static") {
-      setRevealed(steps.length);
-      setLine(null);
-      return;
-    }
-    let frame = 0;
-    const update = () => {
-      frame = 0;
-      const items = Array.from(listRef.current?.children ?? []).filter(
-        (c) => c.tagName === "LI",
-      ) as HTMLElement[];
-      let n = 1;
-      if (mode === "pinned" && trackRef.current) {
-        const rect = trackRef.current.getBoundingClientRect();
-        const dist = trackRef.current.offsetHeight - window.innerHeight;
-        const p = dist > 0 ? Math.min(1, Math.max(0, -rect.top / dist)) : 1;
-        n = Math.min(steps.length, 1 + Math.floor(p * steps.length));
-      } else {
-        n = items.filter((li) => li.getBoundingClientRect().top < window.innerHeight * 0.8).length;
-      }
-      setRevealed(n);
-      const last = items[Math.max(0, n - 1)];
-      const horizontal = mode === "pinned" || window.matchMedia("(min-width: 768px)").matches;
-      setLine(n === 0 || !last ? 0 : (horizontal ? last.offsetLeft : last.offsetTop) + 18);
-    };
-    const onScroll = () => {
-      if (!frame) frame = requestAnimationFrame(update);
-    };
-    update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-      if (frame) cancelAnimationFrame(frame);
-    };
-  }, [directSequence, mode]);
-
-  const pinned = mode === "pinned" && !directSequence;
-  const active = mode === "static" ? -1 : revealed - 1;
 
   return (
-    <div
-      ref={trackRef}
-      data-mode={mode}
-      style={pinned ? { height: `calc(100vh + ${PIN_STEP_VH * (steps.length - 1)}vh)` } : undefined}
-    >
-      <div
-        className={pinned ? "sticky top-0 flex min-h-screen flex-col justify-center" : undefined}
-      >
+    <div className="mx-auto w-full max-w-6xl px-6 py-20 md:px-10 md:py-32">
+      {children}
+      <div className="relative mt-20">
         <div
-          ref={contentRef}
-          className={`mx-auto w-full max-w-6xl px-6 md:px-10 ${pinned ? "py-12" : "py-20 md:py-32"}`}
-        >
-          {children}
-          <ol ref={listRef} className="timeline relative mt-20 grid gap-0 md:grid-cols-4">
-            <div
-              aria-hidden
-              className="absolute left-[1.15rem] top-0 h-full w-px bg-rule md:left-0 md:top-[1.15rem] md:h-px md:w-full"
-            />
-            <div
-              aria-hidden
-              className="timeline-line absolute left-[1.15rem] top-0 w-px bg-signal md:left-0 md:top-[1.15rem] md:h-px"
-              style={line === null ? undefined : { ["--line" as string]: `${line}px` }}
-              data-progress={line === null ? "full" : "partial"}
-            />
-            {steps.map((s, i) => {
-              const shown = i < revealed;
-              const isActive = i === active;
-              return (
-                <li
-                  key={s.n}
-                  tabIndex={0}
-                  data-shown={shown}
-                  aria-current={isActive ? "step" : undefined}
-                  className="timeline-step group relative rounded-sm pb-12 pl-14 outline-none focus-visible:ring-2 focus-visible:ring-signal focus-visible:ring-offset-4 focus-visible:ring-offset-card md:pb-0 md:pl-0 md:pr-8"
-                >
-                  <span
-                    className={`absolute left-0 top-0 flex h-[2.3rem] w-[2.3rem] items-center justify-center rounded-full border bg-card font-mono text-xs transition-colors duration-300 md:static group-hover:border-signal group-hover:text-signal group-focus-visible:border-signal group-focus-visible:text-signal ${
-                      isActive ? "border-signal text-signal" : "border-foreground"
-                    }`}
-                  >
-                    {s.n}
-                  </span>
-                  <h3
-                    className={`pt-1 font-display text-2xl [overflow-wrap:anywhere] hyphens-auto underline decoration-1 underline-offset-8 transition-colors duration-300 group-hover:decoration-signal group-focus-visible:decoration-signal md:mt-8 md:pt-0 md:text-3xl ${
-                      isActive ? "decoration-signal" : "decoration-transparent"
-                    }`}
-                  >
-                    {translate(s.t)}
-                  </h3>
-                  <p className="mt-4 leading-relaxed text-muted-foreground">{translate(s.d)}</p>
-                </li>
-              );
-            })}
-          </ol>
-        </div>
+          aria-hidden="true"
+          className="absolute left-[1.15rem] top-0 h-full w-px bg-signal md:left-0 md:top-[1.15rem] md:h-px md:w-full"
+        />
+        <ol ref={listRef} className="timeline relative grid gap-0 md:grid-cols-4">
+          {steps.map((step, index) => (
+            <li
+              key={step.n}
+              data-reveal={reveal}
+              style={{ animationDelay: `${index * 180}ms` }}
+              className="timeline-step group relative pb-12 pl-14 md:pb-0 md:pl-0 md:pr-8"
+            >
+              <span className="absolute left-0 top-0 flex h-[2.3rem] w-[2.3rem] items-center justify-center rounded-full border border-foreground bg-card font-mono text-xs transition-colors duration-300 group-hover:border-signal group-hover:text-signal-deep md:static">
+                {step.n}
+              </span>
+              <h3 className="pt-1 font-display text-2xl [overflow-wrap:anywhere] hyphens-auto md:mt-8 md:pt-0 md:text-3xl">
+                {translate(step.t)}
+              </h3>
+              <p className="mt-4 leading-relaxed text-muted-foreground">{translate(step.d)}</p>
+            </li>
+          ))}
+        </ol>
       </div>
     </div>
   );
@@ -337,44 +197,34 @@ function CTA({ translate }: { translate: (text: string) => string }) {
   return (
     <a
       href="#contact"
-      className="group inline-flex items-center gap-3 rounded-full bg-primary px-6 py-3.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+      className="action-link inline-flex items-center gap-3 rounded-full bg-primary px-6 py-3.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
     >
       {translate("Discutons de votre besoin")}
-      <span className="transition-transform group-hover:translate-x-1">→</span>
+      <span aria-hidden="true" className="link-arrow">
+        →
+      </span>
     </a>
   );
 }
 
 function Index() {
+  const entranceRef = useSectionEntrance();
   const [language, setLanguage] = useState<Language>("fr");
   const scrollAnchor = useRef<{ element: Element; top: number } | null>(null);
-  const timelineAnchor = useRef<{ element: HTMLElement; progress: number } | null>(null);
   const t = (text: string) => (language === "en" ? (english[text] ?? text) : text);
 
   const showMethod = (event: ReactMouseEvent<HTMLAnchorElement>) => {
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     event.preventDefault();
     const section = document.getElementById("methode");
     if (!section) return;
 
-    const root = document.documentElement;
-    const previousScrollBehavior = root.style.scrollBehavior;
-    root.style.scrollBehavior = "auto";
-    section.scrollIntoView({ block: "start" });
-    root.style.scrollBehavior = previousScrollBehavior;
+    section.scrollIntoView({ block: "start", behavior: "instant" });
     window.history.replaceState(null, "", "#methode");
-    requestAnimationFrame(() => window.dispatchEvent(new Event(METHOD_SEQUENCE_EVENT)));
+    section.focus({ preventScroll: true });
   };
 
   const capturePosition = () => {
-    const track = document.querySelector<HTMLElement>('[data-mode="pinned"]');
-    if (track) {
-      const rect = track.getBoundingClientRect();
-      const distance = track.offsetHeight - window.innerHeight;
-      if (rect.top <= 0 && -rect.top < distance) {
-        timelineAnchor.current = { element: track, progress: -rect.top / distance };
-        return;
-      }
-    }
     const candidates = Array.from(
       document.querySelectorAll(
         "header, section h1, section h2, section h3, section p, article, .timeline-step, footer",
@@ -414,29 +264,15 @@ function Index() {
   }, []);
 
   useLayoutEffect(() => {
-    document.documentElement.lang = language;
-    document.title =
-      language === "en"
-        ? "Badis Merakchi — Freelance Cloud & DevOps consultant"
-        : "Badis Merakchi — Consultant Cloud & DevOps freelance";
-    const pinned = timelineAnchor.current;
+    syncPageMetadata(language);
     const anchor = scrollAnchor.current;
-    if (pinned) {
-      const top = pinned.element.getBoundingClientRect().top + window.scrollY;
-      window.scrollTo({
-        top: top + pinned.progress * (pinned.element.offsetHeight - window.innerHeight),
-        behavior: "instant",
-      });
-    } else if (anchor?.element.isConnected) {
+    if (anchor?.element.isConnected) {
       window.scrollBy({
         top: anchor.element.getBoundingClientRect().top - anchor.top,
         behavior: "instant",
       });
     }
-    timelineAnchor.current = null;
     scrollAnchor.current = null;
-    // Recompute the line without remounting the timeline or restarting its effects.
-    window.dispatchEvent(new Event("scroll"));
   }, [language]);
 
   const languageSelector = (
@@ -469,16 +305,19 @@ function Index() {
   );
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div ref={entranceRef} className="min-h-screen bg-background text-foreground">
+      <a className="skip-link" href="#main-content">
+        {t("Aller au contenu")}
+      </a>
       <header className="bg-background text-foreground">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-2 px-6 py-6 md:px-10">
-          <a href="#" className="min-w-0 font-display text-lg tracking-tight">
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-4 gap-y-2 px-6 py-6 md:px-10">
+          <a href="#" className="shrink-0 font-display text-lg tracking-tight">
             {t("Badis Merakchi")}
             <span className="text-signal">{t(".")}</span>
           </a>
           <nav
             aria-label={language === "fr" ? "Navigation principale" : "Main navigation"}
-            className="flex items-center gap-2 text-sm text-muted-foreground md:gap-8"
+            className="flex w-full items-center justify-between gap-3 text-sm text-muted-foreground sm:w-auto sm:justify-start md:gap-8"
           >
             <a href="#prestations" className="hidden md:inline hover:text-foreground">
               {t("Prestations")}
@@ -494,6 +333,18 @@ function Index() {
             <a href="#profil" className="hidden md:inline hover:text-foreground">
               {t("Profil")}
             </a>
+            <a
+              href={PORTFOLIO_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="action-link inline-flex min-h-11 items-center gap-1.5 transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-signal"
+            >
+              {t("Portfolio")}
+              <span aria-hidden="true" className="link-arrow link-arrow-diagonal">
+                ↗
+              </span>
+              <span className="sr-only">{t("(nouvel onglet)")}</span>
+            </a>
             <a href="#contact" className="inline-flex min-h-11 items-center hover:text-foreground">
               {t("Contact")}
             </a>
@@ -502,209 +353,250 @@ function Index() {
         </div>
       </header>
 
-      {/* Home */}
-      <section className="bg-background text-foreground">
-        <div className="mx-auto max-w-6xl px-6 pb-20 pt-12 md:px-10 md:pb-28 md:pt-20">
-          <div className="reveal flex flex-wrap items-center gap-x-4 gap-y-3">
-            <a
-              href="#contact"
-              className="inline-flex min-h-8 items-center gap-2 rounded-full border border-emerald-700/15 bg-emerald-100/60 px-3 py-1 font-mono text-[0.64rem] font-semibold uppercase tracking-[0.12em] text-emerald-800 transition-colors hover:bg-emerald-100 focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-emerald-700"
-            >
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-600" aria-hidden="true" />
-              {t("Disponible")}
-            </a>
-            <p className="eyebrow text-muted-foreground">
-              {t("Consultant Cloud & DevOps · France, Suisse romande, remote")}
-            </p>
+      <main id="main-content" tabIndex={-1}>
+        {/* Home */}
+        <section className="bg-background text-foreground">
+          <div className="mx-auto max-w-6xl px-6 pb-20 pt-12 md:px-10 md:pb-28 md:pt-20">
+            <div className="reveal flex flex-wrap items-center gap-x-4 gap-y-3">
+              <a
+                href="#contact"
+                className="inline-flex min-h-8 items-center gap-2 rounded-full border border-emerald-700/15 bg-emerald-100/60 px-3 py-1 font-mono text-[0.64rem] font-semibold uppercase tracking-[0.12em] text-emerald-800 transition-colors hover:bg-emerald-100 focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-emerald-700"
+              >
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-600" aria-hidden="true" />
+                {t("Disponible")}
+              </a>
+              <p className="eyebrow text-muted-foreground">
+                {t("Consultant Cloud & DevOps · France, Suisse romande, remote")}
+              </p>
+            </div>
+            <h1 className="reveal mt-8 max-w-5xl font-display text-[2.6rem] font-light leading-[1.02] tracking-tight md:text-[5.5rem]">
+              {t("Des infrastructures que vos équipes ")}
+              <em className="text-signal">{t("comprennent")}</em>
+              {t(", déploient et font évoluer.")}
+            </h1>
+            <div className="reveal mt-12 grid gap-10 border-t border-rule pt-8 md:grid-cols-[1.4fr_1fr] md:gap-16">
+              <p className="max-w-xl text-lg leading-relaxed text-muted-foreground">
+                {t(
+                  "J’accompagne les entreprises et leurs équipes techniques qui veulent automatiser, fiabiliser et industrialiser leur cloud, leurs pipelines CI/CD et leurs plateformes de déploiement — avec une démarche claire et des résultats qui restent maintenables après mon départ.",
+                )}
+              </p>
+              <div className="flex flex-col items-start gap-5">
+                <CTA translate={t} />
+                <a
+                  href={`mailto:${EMAIL}`}
+                  className="font-mono text-sm text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
+                >
+                  {EMAIL}
+                </a>
+                <p className="eyebrow text-muted-foreground">{t("Réponse sous 24 h")}</p>
+              </div>
+            </div>
           </div>
-          <h1 className="reveal mt-8 max-w-5xl font-display text-[2.6rem] font-light leading-[1.02] tracking-tight md:text-[5.5rem]">
-            {t("Des infrastructures que vos équipes ")}
-            <em className="text-signal">{t("comprennent")}</em>
-            {t(", déploient et font évoluer.")}
-          </h1>
-          <div className="reveal mt-12 grid gap-10 border-t border-rule pt-8 md:grid-cols-[1.4fr_1fr] md:gap-16">
-            <p className="max-w-xl text-lg leading-relaxed text-muted-foreground">
+        </section>
+
+        {/* Challenges */}
+        <section className="bg-night text-night-foreground">
+          <div className="section-entrance mx-auto grid max-w-6xl gap-12 px-6 py-20 md:grid-cols-[1fr_1.6fr] md:px-10 md:py-28">
+            <div>
+              <p className="eyebrow text-signal-light">{t("Vos enjeux")}</p>
+              <h2 className="mt-5 font-display text-3xl font-light leading-tight md:text-5xl">
+                {t("Vous vous reconnaissez peut‑être ici.")}
+              </h2>
+            </div>
+            <ol className="divide-y divide-night-foreground/15 border-y border-night-foreground/15">
+              {problems.map((p, i) => (
+                <li key={p} className="flex gap-6 py-5 text-lg leading-snug md:text-xl">
+                  <span className="pt-1 font-mono text-xs text-signal-light">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  {t(p)}
+                </li>
+              ))}
+            </ol>
+          </div>
+        </section>
+
+        {/* Services */}
+        <section id="prestations" className="mx-auto max-w-6xl px-6 py-20 md:px-10 md:py-28">
+          <div className="section-entrance flex flex-col justify-between gap-6 md:flex-row md:items-end">
+            <div>
+              <p className="eyebrow text-signal-deep">{t("Prestations")}</p>
+              <h2 className="mt-5 max-w-2xl font-display text-3xl font-light leading-tight md:text-5xl">
+                {t("Partir de votre problème, pas d’un catalogue d’outils.")}
+              </h2>
+            </div>
+            <p className="max-w-sm text-muted-foreground">
               {t(
-                "J’accompagne les entreprises et leurs équipes techniques qui veulent automatiser, fiabiliser et industrialiser leur cloud, leurs pipelines CI/CD et leurs plateformes de déploiement — avec une démarche claire et des résultats qui restent maintenables après mon départ.",
+                "Cinq domaines d’intervention, toujours avec la même exigence : simple, robuste, documenté.",
               )}
             </p>
-            <div className="flex flex-col items-start gap-5">
-              <CTA translate={t} />
-              <a
-                href={`mailto:${EMAIL}`}
-                className="font-mono text-sm text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
+          </div>
+          <div className="mt-16 border-t border-foreground">
+            {services.map((s) => (
+              <article
+                key={s.n}
+                className="section-entrance grid gap-6 border-b border-rule py-10 md:grid-cols-[4rem_1fr_1.2fr] md:gap-10 md:py-14"
               >
-                {EMAIL}
-              </a>
-              <p className="eyebrow text-muted-foreground">{t("Réponse sous 24 h")}</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Challenges */}
-      <section className="bg-night text-night-foreground">
-        <div className="mx-auto grid max-w-6xl gap-12 px-6 py-20 md:grid-cols-[1fr_1.6fr] md:px-10 md:py-28">
-          <div>
-            <p className="eyebrow text-signal">{t("Vos enjeux")}</p>
-            <h2 className="mt-5 font-display text-3xl font-light leading-tight md:text-5xl">
-              {t("Vous vous reconnaissez peut‑être ici.")}
-            </h2>
-          </div>
-          <ol className="divide-y divide-night-foreground/15 border-y border-night-foreground/15">
-            {problems.map((p, i) => (
-              <li key={p} className="flex gap-6 py-5 text-lg leading-snug md:text-xl">
-                <span className="pt-1 font-mono text-xs text-signal">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                {t(p)}
-              </li>
+                <span className="font-display text-2xl italic text-signal">{s.n}</span>
+                <div>
+                  <p className="font-display text-xl italic text-muted-foreground">{t(s.need)}</p>
+                  <h3 className="mt-3 text-2xl font-semibold tracking-tight">{t(s.title)}</h3>
+                </div>
+                <div>
+                  <p className="leading-relaxed text-muted-foreground">{t(s.body)}</p>
+                  <ul className="mt-5 space-y-2 text-sm">
+                    {s.points.map((p) => (
+                      <li key={p} className="flex gap-3">
+                        <span className="text-signal">—</span>
+                        {t(p)}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </article>
             ))}
-          </ol>
-        </div>
-      </section>
-
-      {/* Services */}
-      <section id="prestations" className="mx-auto max-w-6xl px-6 py-20 md:px-10 md:py-28">
-        <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
-          <div>
-            <p className="eyebrow text-signal">{t("Prestations")}</p>
-            <h2 className="mt-5 max-w-2xl font-display text-3xl font-light leading-tight md:text-5xl">
-              {t("Partir de votre problème, pas d’un catalogue d’outils.")}
-            </h2>
           </div>
-          <p className="max-w-sm text-muted-foreground">
-            {t(
-              "Cinq domaines d’intervention, toujours avec la même exigence : simple, robuste, documenté.",
-            )}
-          </p>
-        </div>
-        <div className="mt-16 border-t border-foreground">
-          {services.map((s) => (
-            <article
-              key={s.n}
-              className="grid gap-6 border-b border-rule py-10 md:grid-cols-[4rem_1fr_1.2fr] md:gap-10 md:py-14"
+        </section>
+
+        {/* Approach */}
+        <section id="methode" tabIndex={-1} className="border-y border-rule bg-card">
+          <MethodTimeline translate={t}>
+            <p className="eyebrow text-signal-deep">{t("Méthode")}</p>
+            <h2 className="mt-5 max-w-4xl font-display text-4xl font-light leading-[1.05] tracking-tight md:text-7xl">
+              {t("Une intervention structurée, ")}
+              <em>{t("du cadrage à la livraison")}</em>
+            </h2>
+            <p className="mt-8 max-w-2xl text-lg leading-relaxed text-muted-foreground">
+              {t(
+                "Chaque mission commence par une compréhension claire du contexte. L’objectif n’est pas d’ajouter des outils, mais de résoudre les bons problèmes dans le bon ordre.",
+              )}
+            </p>
+          </MethodTimeline>
+        </section>
+
+        {/* Profile */}
+        <section id="profil" className="mx-auto max-w-6xl px-6 py-20 md:px-10 md:py-28">
+          <div className="section-entrance grid gap-14 md:grid-cols-[1.3fr_1fr] md:gap-20">
+            <div>
+              <p className="eyebrow text-signal-deep">{t("Profil")}</p>
+              <h2 className="mt-5 font-display text-3xl font-light leading-tight md:text-5xl">
+                {t("Un consultant senior qui livre — et qui transmet.")}
+              </h2>
+              <div className="mt-8 space-y-5 text-lg leading-relaxed text-muted-foreground">
+                <p>
+                  {t(
+                    "Je suis Badis Merakchi, consultant indépendant Cloud & DevOps basé près de Genève. J’interviens sur l’automatisation d’infrastructure, les pipelines CI/CD, les environnements cloud et les fondations Platform Engineering, dans des contextes techniques exigeants.",
+                  )}
+                </p>
+                <p>
+                  {t(
+                    "Ma conviction : les meilleures solutions sont simples, robustes et adaptées à la maturité de l’équipe. Je ne complexifie pas l’existant, je le rends fiable, lisible et exploitable par ceux qui le feront vivre.",
+                  )}
+                </p>
+              </div>
+            </div>
+            <dl className="self-center border-t border-foreground">
+              {(
+                [
+                  ["Cloud & IaC", "Terraform · AWS · Azure · OCI"],
+                  ["Delivery", "CI/CD · Docker · Automatisation"],
+                  ["Plateforme", "Kubernetes · Helm · GitOps"],
+                  ["Transmission", "Formateur, documentation, ateliers"],
+                ] as [string, string][]
+              ).map(([k, v]) => (
+                <div
+                  key={k}
+                  className="flex flex-col gap-1 border-b border-rule py-5 sm:flex-row sm:justify-between"
+                >
+                  <dt className="font-medium">{t(k)}</dt>
+                  <dd className="font-mono text-sm text-muted-foreground">{t(v)}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+
+          <div className="section-entrance mt-10 grid gap-5 border-t border-rule pt-7 md:grid-cols-[1fr_auto] md:items-center md:gap-10">
+            <div className="max-w-2xl">
+              <h3 className="font-display text-2xl font-light">
+                {t("Découvrez mon travail technique")}
+              </h3>
+              <p className="mt-3 leading-relaxed text-muted-foreground">
+                {t(
+                  "Retrouvez mes réalisations, mes projets et mes choix techniques sur mon portfolio pour mieux découvrir mon profil et ma manière de travailler.",
+                )}
+              </p>
+            </div>
+            <a
+              href={PORTFOLIO_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="action-link inline-flex min-h-11 items-center justify-self-start gap-3 rounded-full border border-foreground/25 px-5 py-2.5 text-sm font-medium transition-colors hover:border-signal hover:text-signal-deep focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-signal"
             >
-              <span className="font-display text-2xl italic text-signal">{s.n}</span>
-              <div>
-                <p className="font-display text-xl italic text-muted-foreground">{t(s.need)}</p>
-                <h3 className="mt-3 text-2xl font-semibold tracking-tight">{t(s.title)}</h3>
-              </div>
-              <div>
-                <p className="leading-relaxed text-muted-foreground">{t(s.body)}</p>
-                <ul className="mt-5 space-y-2 text-sm">
-                  {s.points.map((p) => (
-                    <li key={p} className="flex gap-3">
-                      <span className="text-signal">—</span>
-                      {t(p)}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
+              {t("Explorer mon portfolio")}
+              <span aria-hidden="true" className="link-arrow link-arrow-diagonal">
+                ↗
+              </span>
+              <span className="sr-only">{t("(nouvel onglet)")}</span>
+            </a>
+          </div>
 
-      {/* Approach */}
-      <section id="methode" className="border-y border-rule bg-card">
-        <MethodTimeline translate={t}>
-          <p className="eyebrow text-signal">{t("Méthode")}</p>
-          <h2 className="mt-5 max-w-4xl font-display text-4xl font-light leading-[1.05] tracking-tight md:text-7xl">
-            {t("Une intervention structurée, ")}
-            <em>{t("du cadrage à la livraison")}</em>
-          </h2>
-          <p className="mt-8 max-w-2xl text-lg leading-relaxed text-muted-foreground">
-            {t(
-              "Chaque mission commence par une compréhension claire du contexte. L’objectif n’est pas d’ajouter des outils, mais de résoudre les bons problèmes dans le bon ordre.",
-            )}
-          </p>
-        </MethodTimeline>
-      </section>
-
-      {/* Profile */}
-      <section id="profil" className="mx-auto max-w-6xl px-6 py-20 md:px-10 md:py-28">
-        <div className="grid gap-14 md:grid-cols-[1.3fr_1fr] md:gap-20">
-          <div>
-            <p className="eyebrow text-signal">{t("Profil")}</p>
-            <h2 className="mt-5 font-display text-3xl font-light leading-tight md:text-5xl">
-              {t("Un consultant senior qui livre — et qui transmet.")}
-            </h2>
-            <div className="mt-8 space-y-5 text-lg leading-relaxed text-muted-foreground">
-              <p>
-                {t(
-                  "Je suis Badis Merakchi, consultant indépendant Cloud & DevOps basé près de Genève. J’interviens sur l’automatisation d’infrastructure, les pipelines CI/CD, les environnements cloud et les fondations Platform Engineering, dans des contextes techniques exigeants.",
-                )}
-              </p>
-              <p>
-                {t(
-                  "Ma conviction : les meilleures solutions sont simples, robustes et adaptées à la maturité de l’équipe. Je ne complexifie pas l’existant, je le rends fiable, lisible et exploitable par ceux qui le feront vivre.",
-                )}
-              </p>
+          <div className="section-entrance mt-14 md:mt-16">
+            <p className="eyebrow text-muted-foreground">{t("Formats d’intervention")}</p>
+            <div className="mt-6 grid grid-cols-2 border-l border-t border-rule md:grid-cols-4">
+              {formats.map(([label, d]) => (
+                <div key={label} className="border-b border-r border-rule p-6">
+                  <p className="font-display text-xl">{t(label)}</p>
+                  <p className="mt-2 text-sm text-muted-foreground">{t(d)}</p>
+                </div>
+              ))}
             </div>
           </div>
-          <dl className="self-end border-t border-foreground">
-            {(
-              [
-                ["Cloud & IaC", "Terraform · AWS · Azure · OCI"],
-                ["Delivery", "CI/CD · Docker · Automatisation"],
-                ["Plateforme", "Kubernetes · Helm · GitOps"],
-                ["Transmission", "Formateur, documentation, ateliers"],
-              ] as [string, string][]
-            ).map(([k, v]) => (
-              <div
-                key={k}
-                className="flex flex-col gap-1 border-b border-rule py-5 sm:flex-row sm:justify-between"
-              >
-                <dt className="font-medium">{t(k)}</dt>
-                <dd className="font-mono text-sm text-muted-foreground">{t(v)}</dd>
-              </div>
-            ))}
-          </dl>
-        </div>
+        </section>
 
-        <div className="mt-24">
-          <p className="eyebrow text-muted-foreground">{t("Formats d’intervention")}</p>
-          <div className="mt-6 grid grid-cols-2 border-l border-t border-rule md:grid-cols-4">
-            {formats.map(([label, d]) => (
-              <div key={label} className="border-b border-r border-rule p-6">
-                <p className="font-display text-xl">{t(label)}</p>
-                <p className="mt-2 text-sm text-muted-foreground">{t(d)}</p>
-              </div>
-            ))}
+        {/* Contact */}
+        <section id="contact" className="bg-primary text-primary-foreground">
+          <div className="section-entrance mx-auto max-w-6xl px-6 py-24 md:px-10 md:py-36">
+            <p className="eyebrow text-signal-light">{t("Contact")}</p>
+            <h2 className="mt-6 max-w-4xl font-display text-4xl font-light leading-[1.05] md:text-7xl">
+              {t("Parlons de votre infrastructure.")}
+            </h2>
+            <p className="mt-8 max-w-xl text-lg leading-relaxed text-primary-foreground/75">
+              {t(
+                "Quelques lignes suffisent : votre contexte, ce qui bloque aujourd’hui et votre horizon de démarrage. Je vous réponds sous 24 h pour voir si je peux vous aider.",
+              )}
+            </p>
+            <a
+              href={`mailto:${EMAIL}`}
+              className="mt-12 block break-all font-display text-2xl italic underline decoration-signal decoration-2 underline-offset-8 transition-colors hover:text-signal md:text-5xl"
+            >
+              {EMAIL}
+            </a>
+            <p className="mt-6 max-w-xl text-sm leading-relaxed text-primary-foreground/75">
+              {t("Les informations transmises par email servent à répondre à votre demande.")}{" "}
+              <a href={PRIVACY_PATHS[language]} className="underline underline-offset-4">
+                {t("En savoir plus sur vos données.")}
+              </a>
+            </p>
+            <div className="mt-14 flex flex-wrap gap-x-10 gap-y-3 font-mono text-xs uppercase tracking-widest text-primary-foreground/60">
+              <span>{t("Disponible pour de nouvelles missions")}</span>
+              <span>{t("Sur site ou remote")}</span>
+              <span>{t("Mission courte ou longue")}</span>
+            </div>
           </div>
-        </div>
-      </section>
-
-      {/* Contact */}
-      <section id="contact" className="bg-primary text-primary-foreground">
-        <div className="mx-auto max-w-6xl px-6 py-24 md:px-10 md:py-36">
-          <p className="eyebrow text-signal">{t("Contact")}</p>
-          <h2 className="mt-6 max-w-4xl font-display text-4xl font-light leading-[1.05] md:text-7xl">
-            {t("Parlons de votre infrastructure.")}
-          </h2>
-          <p className="mt-8 max-w-xl text-lg leading-relaxed text-primary-foreground/75">
-            {t(
-              "Quelques lignes suffisent : votre contexte, ce qui bloque aujourd’hui et votre horizon de démarrage. Je vous réponds sous 24 h pour voir si je peux vous aider.",
-            )}
-          </p>
-          <a
-            href={`mailto:${EMAIL}`}
-            className="mt-12 block break-all font-display text-2xl italic underline decoration-signal decoration-2 underline-offset-8 transition-colors hover:text-signal md:text-5xl"
-          >
-            {EMAIL}
-          </a>
-          <div className="mt-14 flex flex-wrap gap-x-10 gap-y-3 font-mono text-xs uppercase tracking-widest text-primary-foreground/60">
-            <span>{t("Disponible pour de nouvelles missions")}</span>
-            <span>{t("Sur site ou remote")}</span>
-            <span>{t("Mission courte ou longue")}</span>
-          </div>
-        </div>
-        <footer className="mx-auto flex max-w-6xl justify-between border-t border-primary-foreground/15 px-6 py-6 text-xs text-primary-foreground/60 md:px-10">
+        </section>
+      </main>
+      <footer className="bg-primary text-primary-foreground">
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 border-t border-primary-foreground/15 px-6 py-6 text-xs text-primary-foreground/75 md:px-10">
           <span>© {new Date().getFullYear()} Badis Merakchi</span>
+          <a
+            href={PRIVACY_PATHS[language]}
+            className="inline-flex min-h-8 items-center underline underline-offset-4 hover:text-primary-foreground"
+          >
+            {t("Confidentialité")}
+          </a>
           <span>Cloud · DevOps · Platform</span>
-        </footer>
-      </section>
+        </div>
+      </footer>
     </div>
   );
 }

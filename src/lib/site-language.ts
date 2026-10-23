@@ -21,7 +21,18 @@ export const english: Record<string, string> = {
   Prestations: "Services",
   Méthode: "Approach",
   Profil: "About",
+  Portfolio: "Portfolio",
+  "(nouvel onglet)": "(opens in a new tab)",
+  "Découvrez mon travail technique": "Explore my technical work",
+  "Retrouvez mes réalisations, mes projets et mes choix techniques sur mon portfolio pour mieux découvrir mon profil et ma manière de travailler.":
+    "Discover my projects, technical decisions and practical work to get a clearer picture of my background and approach.",
+  "Explorer mon portfolio": "Explore my portfolio",
   Contact: "Contact",
+  "Aller au contenu": "Skip to content",
+  Confidentialité: "Privacy",
+  "Les informations transmises par email servent à répondre à votre demande.":
+    "Information you send by email is used to respond to your enquiry.",
+  "En savoir plus sur vos données.": "Learn more about your data.",
   Disponible: "Available",
   "Discutons de votre besoin": "Let’s discuss your needs",
   "Consultant Cloud & DevOps · France, Suisse romande, remote":
